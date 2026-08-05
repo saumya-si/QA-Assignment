@@ -56,6 +56,17 @@ export function getCustomerCredentials() {
   };
 }
 
+export async function getInStockProducts(request, limit = 2) {
+  const response = await request.get(`${env.apiBaseUrl}/products`);
+  const body = await response.json();
+  const products = body.data || body;
+  const inStock = products.filter((product) => product.in_stock !== false);
+  if (inStock.length < limit) {
+    throw new Error(`Need at least ${limit} in-stock products; found ${inStock.length}`);
+  }
+  return inStock.slice(0, limit);
+}
+
 export async function getFirstInStockProductId(request) {
   const response = await request.get(`${env.apiBaseUrl}/products`);
   const body = await response.json();

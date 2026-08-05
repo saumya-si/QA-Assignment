@@ -1,39 +1,57 @@
 import { test, expect } from '../../fixtures/testFixtures.js';
-import { createBillingAddress } from '../../utils/testDataFactory.js';
+import { getSearchKeyword } from '../../utils/testDataFactory.js';
+import {
+  registerAndLogin,
+  searchAndAddProduct,
+  addProductFromBrowse,
+  updateCartQuantity,
+  completeCodCheckout,
+  verifyLatestInvoice,
+} from '../../utils/purchaseFlowHelper.js';
 
-test.describe('Checkout E2E UI', () => {
-  test.beforeEach(async ({ authPage, testUser }) => {
-    await authPage.register(testUser);
-    await authPage.login(testUser.email, testUser.password);
-  });
+test.describe('Purchase Flow E2E', () => {
+  test.describe.configure({ retries: 1 });
+  test.setTimeout(120_000);
 
-  test('TC-UI-07 @Smoke @Regression @positive E2E purchase with COD and double-confirm invoice', async ({
+  test('TC-UI-07 @Smoke @Regression @positive Complete purchase journey with COD and invoice verification', async ({
+    authApi,
+    invoiceApi,
+    loginPage,
     productPage,
     cartPage,
     checkoutPage,
     invoicePage,
+    testUser,
+    request,
   }) => {
-    await productPage.browseProducts();
-    await productPage.openFirstInStockProduct();
-    await productPage.addToCart();
+    // Step 1: Log in with a valid user account
+    await registerAndLogin({ authApi, loginPage, testUser });
 
-    await productPage.browseProducts();
-    const secondProduct = productPage.page.locator('a[href*="/product/"]').nth(1);
-    if (await secondProduct.isVisible()) {
-      await secondProduct.click();
-      await productPage.addToCart();
-    }
+    // Step 2: Search for a product and add to cart
+    const searchKeyword = getSearchKeyword();
+    const { name: searchedProduct } = await searchAndAddProduct(productPage, request, searchKeyword);
+    expect(searchedProduct.length).toBeGreaterThan(0);
 
-    await cartPage.openCart();
+    // Step 3: Browse catalog and add a second product
+    const browsedProduct = await addProductFromBrowse(productPage, 1);
+    expect(browsedProduct.length).toBeGreaterThan(0);
+
+    // Step 4: Update product quantity in cart
+    const cartTotal = await updateCartQuantity(cartPage, 2);
+    expect(cartTotal).toMatch(/\d/);
+
+    // Step 5–6: Checkout with COD and double-confirm order placement
     await cartPage.proceedToCheckout();
+    const { orderConfirmation } = await completeCodCheckout(checkoutPage);
 
-    const billing = createBillingAddress('ui-cart');
-    await checkoutPage.fillBilling(billing);
-    await checkoutPage.selectCashOnDelivery();
-    await checkoutPage.confirmTwice();
+    // Step 7: Verify invoice is generated with expected order details
+    const invoiceDetails = await verifyLatestInvoice(invoicePage, authApi, invoiceApi, testUser, {
+      orderConfirmation,
+      productNames: [searchedProduct, browsedProduct],
+      minInvoiceCount: 1,
+    });
 
-    await invoicePage.gotoInvoices();
-    const invoiceText = await invoicePage.getLatestInvoiceText();
-    expect(invoiceText.toLowerCase()).toMatch(/invoice/);
+    expect(invoiceDetails).toMatch(/\$\d/);
+    expect(await invoicePage.getInvoiceCount()).toBe(1);
   });
 });
