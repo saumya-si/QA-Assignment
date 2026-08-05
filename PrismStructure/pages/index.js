@@ -1,26 +1,7 @@
-import { env } from '../config/env.config.js';
+import { BasePage } from './basePage.js';
 
-export class BasePage {
-  constructor(page) {
-    this.page = page;
-  }
-
-  async navigate(path = '/') {
-    await this.page.goto(path, { waitUntil: 'domcontentloaded' });
-  }
-
-  async waitForAngularLoad() {
-    await this.page.waitForLoadState('networkidle');
-  }
-
-  async clickByRole(role, name, options = {}) {
-    await this.page.getByRole(role, { name, ...options }).click();
-  }
-
-  async fillByLabel(label, value) {
-    await this.page.getByLabel(label, { exact: false }).fill(value);
-  }
-}
+export { BasePage } from './basePage.js';
+export { LoginPage } from './loginPage.js';
 
 export class AuthPage extends BasePage {
   async gotoRegister() {
@@ -48,9 +29,9 @@ export class AuthPage extends BasePage {
 
   async login(email, password) {
     await this.gotoLogin();
-    await this.fillByLabel('Email', email);
-    await this.fillByLabel('Password', password);
-    await this.page.getByRole('button', { name: /login|sign in/i }).click();
+    await this.page.getByRole('textbox', { name: /email/i }).fill(email);
+    await this.page.locator('input[type="password"]').fill(password);
+    await this.page.getByRole('button', { name: /^login$/i }).click();
   }
 
   async gotoProfile() {

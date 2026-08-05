@@ -41,6 +41,14 @@ export function createUser(overrides = {}) {
   };
 }
 
+export function generateInvalidPassword() {
+  return `Invalid@${Date.now().toString().slice(-6)}`;
+}
+
+export function getCustomerEmail() {
+  return env.customerEmail();
+}
+
 export function getCustomerCredentials() {
   return {
     email: env.customerEmail(),
