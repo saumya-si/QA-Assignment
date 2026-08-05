@@ -7,31 +7,9 @@ import {
   addProductToCart,
   discoverInStockProducts,
   generateInvoice,
-  verifyInvoiceInList,
 } from '../../utils/apiLifecycleHelper.js';
 
 test.describe('Invoice API', () => {
-  test('TC-API-05 @Smoke @Regression Generate invoice COD and verify response', async ({
-    authApi,
-    productApi,
-    cartApi,
-    invoiceApi,
-    testUser,
-  }) => {
-    await authenticateForPurchase(authApi, testUser, productApi, cartApi, invoiceApi);
-    const [product] = await discoverInStockProducts(productApi, 1);
-
-    const cartId = await createShoppingCart(cartApi);
-    await addProductToCart(cartApi, cartId, product.id, 1);
-
-    const invoice = await generateInvoice(invoiceApi, cartId);
-    expect(invoice.invoicelines.some((line) => line.product_id === product.id)).toBe(true);
-
-    const listed = await verifyInvoiceInList(invoiceApi, invoice.id);
-    expect(listed.invoice_number).toBe(invoice.invoice_number);
-    expect(listed.total).toBe(invoice.total);
-  });
-
   test('TC-API-06 @Regression @negative User can only access own invoices (IDOR)', async ({
     authApi,
     productApi,

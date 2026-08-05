@@ -11,6 +11,10 @@ export class BaseApiClient {
     this.token = token;
   }
 
+  clearToken() {
+    this.token = null;
+  }
+
   headers(extra = {}) {
     const headers = { 'Content-Type': 'application/json', Accept: 'application/json', ...extra };
     if (this.token) {

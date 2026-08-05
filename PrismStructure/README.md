@@ -37,7 +37,7 @@ JSON results: `PrismStructure/reports/json/results.json`
 pages/     → UI Page Object Model
 api/       → API Page Object Model
 tests/ui/  → TC-UI-01 – 08
-tests/api/ → TC-API-01 – 07
+tests/api/ → TC-API-01 – 02, 06 – 11
 fixtures/  → Playwright custom fixtures
 utils/     → testDataFactory, apiHelper
 config/    → Environment configuration
