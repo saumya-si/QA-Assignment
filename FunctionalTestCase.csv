@@ -1,0 +1,67 @@
+TestCaseID,RequirementID,Title,TestType,Tag,Priority,Preconditions,Steps,TestData,ExpectedResult,ActualResult,Status
+TC-MAN-01,AUTH-R01;AUTH-R02;AUTH-R03,User registration and login with profile verification,Manual,@Smoke,Critical,Toolshop application is accessible at https://practicesoftwaretesting.com/; User is not logged in,"1. Navigate to Register page (/auth/register)
+2. Enter valid registration details and submit
+3. Verify success message or redirect to login
+4. Navigate to Login page (/auth/login)
+5. Enter registered email and password; submit
+6. Navigate to Profile / Account section
+7. Verify displayed name and email match registered data","First Name: Test
+Last Name: User
+Email: testuser_<timestamp>@example.com
+Password: Valid password (8+ chars; upper/lower/number/symbol)
+DOB: 1990-01-15 (age 18-75)
+Address: Street 1, City, State, Country, 1234AA","User registers successfully; logs in successfully; profile displays correct first name, last name, and email",,
+TC-MAN-02,AUTH-R05,Invalid login attempt shows error message,Manual,@Regression,High,Toolshop application is accessible; Valid customer account exists (pre-seeded or previously registered),"1. Navigate to Login page (/auth/login)
+2. Enter valid email address
+3. Enter incorrect password
+4. Click Login / Submit
+5. Observe page response and error message","Email: customer@practicesoftwaretesting.com (or registered test user)
+Password: InvalidPassword@99","Login is rejected; user remains on login page; clear error message displayed (e.g. invalid credentials); user is not redirected to account/home",,
+TC-MAN-03,BRW-03,Product search returns matching results,Manual,@Regression,Medium,Toolshop application is accessible; Product catalog is available; User may be guest or logged in,"1. Navigate to home / product listing page
+2. Locate search input field
+3. Enter a known product keyword (e.g. hammer or drill)
+4. Submit search or press Enter
+5. Review search results list","Search term: hammer (or any known in-stock product name from catalog)","Search results page/list displays one or more products matching the search term; product name or description contains the keyword",,
+TC-MAN-04,CART-R02;CART-R03,Add multiple items to cart and update quantity,Manual,@Regression,High,User is logged in; At least two in-stock products exist in catalog,"1. Browse product catalog
+2. Open first in-stock product detail; add to cart
+3. Return to catalog; open second different product; add to cart
+4. Open cart / view cart
+5. Verify both products are listed with correct quantities
+6. Increase quantity of one line item
+7. Verify line total and cart total recalculate","Product A: First in-stock item (qty 1)
+Product B: Second different in-stock item (qty 1)
+Updated qty: 2 for Product A","Cart shows 2 distinct products; quantity update reflects on line item; cart total updates correctly after quantity change",,
+TC-MAN-05,CHK-R01,Checkout completes using Cash on Delivery payment,Manual,@Smoke,Critical,User is logged in; Cart contains at least one item,"1. Open cart with items
+2. Proceed to checkout
+3. Enter valid billing address details
+4. Select payment method: Cash on Delivery
+5. Review order summary
+6. Click Confirm button TWICE (per application requirement)
+7. Observe checkout completion message","Billing Street: Zoey Shore
+Billing City: Hesselbury
+Billing State: Florida
+Billing Country: TG
+Billing Postal Code: 1234AA
+Payment Method: Cash on Delivery","Checkout completes successfully after double Confirm; order confirmation or success message is displayed; no payment errors shown",,
+TC-MAN-06,INV-R01;INV-R04;DCF-R01,Invoice verification under My Invoices after purchase,Manual,@Smoke,Critical,User completed COD checkout with double Confirm (depends on TC-MAN-05 or equivalent purchase flow),"1. After successful checkout, navigate to My Invoices (account menu)
+2. Locate the most recent invoice in the list
+3. Open / view invoice details
+4. Verify invoice ID is displayed
+5. Verify line items match cart products and quantities
+6. Verify total amount matches cart total at checkout","Use order from TC-MAN-05 (or repeat checkout flow)
+Expected items: products and quantities added before checkout","Invoice appears in My Invoices list; invoice ID is visible; line items and totals match the completed order",,
+TC-MAN-07,DCF-R02,Single Confirm click does not generate invoice (edge case),Manual,@Regression,High,User is logged in; Cart contains at least one item; Fresh test user or empty invoice history preferred,"1. Add item to cart and proceed to checkout
+2. Enter valid billing details
+3. Select Cash on Delivery
+4. Click Confirm button ONCE only
+5. Wait briefly and check for invoice/success state
+6. Navigate to My Invoices
+7. Verify whether new invoice was created","Billing address: valid test data
+Payment: Cash on Delivery
+Confirm clicks: 1 only","After single Confirm click invoice is NOT generated OR checkout remains incomplete; no new invoice appears in My Invoices (or clear prompt to confirm again is shown)",,
+TC-MAN-08,AUTH-R06,Registration with duplicate email is rejected,Manual,@Regression,Medium,Toolshop application is accessible; A registered user with known email already exists,"1. Navigate to Register page
+2. Enter registration details using an email that is already registered
+3. Fill all other required fields with valid data
+4. Submit registration form
+5. Observe validation/error response","Email: customer@practicesoftwaretesting.com (existing account)
+Other fields: valid registration data per TC-MAN-01","Registration is rejected; error message indicates email already exists or duplicate account; user is not registered again; no duplicate account created",,
