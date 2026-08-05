@@ -28,7 +28,7 @@ export function createUser(overrides = {}) {
     email: `testuser_${timestamp}@example.com`,
     password,
     dob: dobFormatted,
-    phone: faker.phone.number(),
+    phone: faker.string.numeric(10),
     address: {
       street: faker.location.streetAddress(),
       house_number: String(faker.number.int({ min: 1, max: 200 })),

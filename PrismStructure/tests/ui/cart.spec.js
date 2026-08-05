@@ -1,20 +1,16 @@
 import { test, expect } from '../../fixtures/testFixtures.js';
+import { registerAndLogin } from '../../utils/purchaseFlowHelper.js';
 
 test.describe('Cart UI', () => {
-  test.beforeEach(async ({ authPage, testUser }) => {
-    await authPage.register(testUser);
-    await authPage.login(testUser.email, testUser.password);
-  });
+  test('TC-UI-05 @Regression @negative Empty cart prevents checkout progression', async ({
+    authApi,
+    loginPage,
+    cartPage,
+    testUser,
+  }) => {
+    await registerAndLogin({ authApi, loginPage, testUser });
 
-  test('TC-UI-05 @Regression @positive Add product to cart and update quantity', async ({ productPage, cartPage }) => {
-    await productPage.browseProducts();
-    await productPage.openFirstInStockProduct();
-    await productPage.addToCart();
-    await cartPage.openCart();
-    const items = cartPage.getCartLineItems();
-    await expect(items.first()).toBeVisible();
-    await cartPage.updateQuantity(2);
-    const total = await cartPage.getCartTotalText();
-    expect(total).toBeTruthy();
+    await cartPage.openEmptyCart();
+    await cartPage.expectEmptyCart();
   });
 });

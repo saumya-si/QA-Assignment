@@ -58,14 +58,36 @@ export async function updateCartQuantity(cartPage, quantity) {
 }
 
 /**
- * Completes checkout with COD billing and double-confirm placement.
+ * Advances checkout to the COD payment step (billing filled, payment method selected).
  */
-export async function completeCodCheckout(checkoutPage, billing = createBillingAddress('ui-cart')) {
+export async function prepareCodPaymentStep(checkoutPage, billing = createBillingAddress('ui-edge')) {
   await checkoutPage.advanceToBillingStep();
   await checkoutPage.fillBilling(billing);
   await checkoutPage.proceedButton.click();
   await checkoutPage.waitForAngularLoad();
   await checkoutPage.selectCashOnDelivery();
+}
+
+/**
+ * Asserts the authenticated user has no invoices via API.
+ */
+export async function verifyNoInvoicesForUser(authApi, invoiceApi, testUser) {
+  const loginResponse = await authApi.login(testUser.email, testUser.password);
+  expect(loginResponse.ok()).toBeTruthy();
+  const { access_token: token } = await parseJson(loginResponse);
+  invoiceApi.setToken(token);
+
+  const invoicesResponse = await invoiceApi.getInvoices();
+  expect(invoicesResponse.ok()).toBeTruthy();
+  const invoices = extractInvoiceList(await parseJson(invoicesResponse));
+  expect(invoices.length).toBe(0);
+}
+
+/**
+ * Completes checkout with COD billing and double-confirm placement.
+ */
+export async function completeCodCheckout(checkoutPage, billing = createBillingAddress('ui-cart')) {
+  await prepareCodPaymentStep(checkoutPage, billing);
   const orderConfirmation = await checkoutPage.confirmTwice();
   return { billing, orderConfirmation };
 }

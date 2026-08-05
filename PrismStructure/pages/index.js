@@ -17,14 +17,32 @@ export class AuthPage extends BasePage {
     await this.gotoRegister();
     await this.fillByLabel('First name', user.first_name);
     await this.fillByLabel('Last name', user.last_name);
+
+    const dobField = this.page.locator('input[type="date"], input[name*="dob"], #dob, [data-test="dob"]').first();
+    if (user.dob && (await dobField.isVisible().catch(() => false))) {
+      await dobField.fill(user.dob);
+    }
+
+    const countrySelect = this.page.locator('[data-test="country"], select[formcontrolname="country"]').first();
+    if (await countrySelect.isVisible().catch(() => false)) {
+      await countrySelect.selectOption({ label: 'United States of America (the)' });
+    }
+
+    if (user.address) {
+      await this.fillByLabel('Postal', user.address.postal_code);
+      await this.fillByLabel('House number', user.address.house_number);
+      await this.fillByLabel('Street', user.address.street);
+      await this.fillByLabel('City', user.address.city);
+      await this.fillByLabel('State', user.address.state);
+    }
+
+    if (user.phone) {
+      const phoneDigits = String(user.phone).replace(/\D/g, '').slice(0, 15);
+      await this.fillByLabel('Phone', phoneDigits);
+    }
+
     await this.fillByLabel('Email', user.email);
     await this.fillByLabel('Password', user.password);
-    if (user.dob) {
-      const dobField = this.page.locator('input[type="date"], input[name*="dob"], #dob').first();
-      if (await dobField.isVisible().catch(() => false)) {
-        await dobField.fill(user.dob);
-      }
-    }
     await this.page.getByRole('button', { name: /register/i }).click();
   }
 
@@ -83,6 +101,30 @@ export class ProductPage extends BasePage {
   async expectSearchResults(keyword) {
     await expect(this.page.locator('body')).toContainText(new RegExp(keyword, 'i'));
     await expect(this.productLinks.first()).toBeVisible();
+  }
+
+  async openFirstOutOfStockProduct(maxAttempts = 12) {
+    await this.browseProducts();
+    const linkCount = await this.productLinks.count();
+
+    for (let index = 0; index < Math.min(maxAttempts, linkCount); index += 1) {
+      await this.productLinks.nth(index).click();
+      await this.waitForAngularLoad();
+
+      if (!(await this.isProductInStock())) {
+        return this.getCurrentProductName();
+      }
+
+      await this.page.goBack();
+      await this.waitForAngularLoad();
+    }
+
+    throw new Error('No out-of-stock product found in catalog');
+  }
+
+  async expectCannotAddToCart() {
+    await expect(this.page.getByText(/out of stock/i)).toBeVisible();
+    await expect(this.addToCartButton).toBeDisabled();
   }
 
   async openProductFromResults(index = 0) {
@@ -147,13 +189,32 @@ export class CartPage extends BasePage {
     this.totalAmount = page.getByRole('cell', { name: /^\$\d/ }).last();
     this.checkoutButton = page.getByRole('button', { name: /proceed|checkout|next/i });
     this.cartHeading = page.getByRole('heading', { name: /cart/i });
+    this.emptyCartMessage = page.getByText(/your cart is empty|cart is empty|no items in your cart/i);
   }
 
   async openCart() {
     await this.cartLink.click();
     await this.page.waitForURL(/checkout|cart/);
     await this.waitForAngularLoad();
-    await expect(this.qtyInputs.first().or(this.cartHeading)).toBeVisible();
+    await expect(this.qtyInputs.first().or(this.cartHeading).or(this.emptyCartMessage)).toBeVisible();
+  }
+
+  async openEmptyCart() {
+    await this.navigate('/checkout');
+    await this.waitForAngularLoad();
+  }
+
+  async expectEmptyCart() {
+    expect(await this.qtyInputs.count()).toBe(0);
+    await this.expectCheckoutBlocked();
+  }
+
+  async expectCheckoutBlocked() {
+    if (await this.checkoutButton.isVisible()) {
+      await expect(this.checkoutButton).toBeDisabled();
+      return;
+    }
+    await expect(this.checkoutButton).toBeHidden();
   }
 
   getCartLineItems() {
@@ -257,6 +318,18 @@ export class CheckoutPage extends BasePage {
 
   async confirmOnce() {
     await this.confirmButton.click();
+  }
+
+  async expectIncompleteCodOrder() {
+    const bodyText = await this.page.locator('body').innerText();
+    expect(bodyText).not.toMatch(/thanks for your order/i);
+    expect(bodyText).not.toMatch(/INV-[A-Z0-9-]+/i);
+
+    const hasIntermediateSuccess = await this.page.getByText(/payment was successful/i).isVisible().catch(() => false);
+    if (hasIntermediateSuccess) {
+      await expect(this.confirmButton).toBeVisible();
+      await expect(this.confirmButton).toBeEnabled();
+    }
   }
 
   async confirmTwice() {

@@ -7,11 +7,42 @@ import {
   updateCartQuantity,
   completeCodCheckout,
   verifyLatestInvoice,
+  prepareCodPaymentStep,
+  verifyNoInvoicesForUser,
 } from '../../utils/purchaseFlowHelper.js';
+import { createBillingAddress } from '../../utils/testDataFactory.js';
 
 test.describe('Purchase Flow E2E', () => {
   test.describe.configure({ retries: 1 });
   test.setTimeout(120_000);
+
+  test('TC-UI-06 @Regression @negative @edge Single COD confirm does not complete order or create invoice', async ({
+    authApi,
+    invoiceApi,
+    loginPage,
+    productPage,
+    cartPage,
+    checkoutPage,
+    invoicePage,
+    testUser,
+    request,
+  }) => {
+    await registerAndLogin({ authApi, loginPage, testUser });
+    await searchAndAddProduct(productPage, request);
+
+    await cartPage.openCart();
+    await cartPage.expectMinimumItems(1);
+    await cartPage.proceedToCheckout();
+
+    await prepareCodPaymentStep(checkoutPage, createBillingAddress('single-confirm'));
+    await checkoutPage.confirmOnce();
+    await checkoutPage.expectIncompleteCodOrder();
+
+    await verifyNoInvoicesForUser(authApi, invoiceApi, testUser);
+
+    await invoicePage.gotoInvoices();
+    expect(await invoicePage.getInvoiceCount()).toBe(0);
+  });
 
   test('TC-UI-07 @Smoke @Regression @positive Complete purchase journey with COD and invoice verification', async ({
     authApi,
