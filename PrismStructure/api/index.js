@@ -60,6 +60,10 @@ export class ProductApiPage extends BaseApiClient {
     return this.get('/products');
   }
 
+  async getProduct(productId) {
+    return this.get(`/products/${productId}`);
+  }
+
   async searchProducts(term) {
     return this.get(`/products/search?q=${encodeURIComponent(term)}`);
   }
@@ -71,7 +75,7 @@ export class CartApiPage extends BaseApiClient {
   }
 
   async addProduct(cartId, productId, quantity = 1) {
-    return this.post(`/carts/${cartId}/product/${productId}`, { quantity });
+    return this.post(`/carts/${cartId}`, { product_id: productId, quantity });
   }
 
   async updateQuantity(cartId, productId, quantity) {
@@ -88,7 +92,12 @@ export class InvoiceApiPage extends BaseApiClient {
     return this.post('/invoices', billingPayload);
   }
 
-  async getInvoices() {
-    return this.get('/invoices');
+  async getInvoices(page) {
+    const query = page != null ? `?page=${page}` : '';
+    return this.get(`/invoices${query}`);
+  }
+
+  async getInvoice(invoiceId) {
+    return this.get(`/invoices/${invoiceId}`);
   }
 }

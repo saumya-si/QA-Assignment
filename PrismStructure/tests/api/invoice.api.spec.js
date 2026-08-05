@@ -1,56 +1,61 @@
 import { test, expect } from '../../fixtures/testFixtures.js';
-import { assertStatus, parseJson } from '../../utils/apiHelper.js';
-import { createUser, createBillingAddress, getFirstInStockProductId } from '../../utils/testDataFactory.js';
+import { assertStatus, parseJson, extractPaginatedData } from '../../utils/apiHelper.js';
+import { createUser } from '../../utils/testDataFactory.js';
+import {
+  authenticateForPurchase,
+  createShoppingCart,
+  addProductToCart,
+  discoverInStockProducts,
+  generateInvoice,
+  verifyInvoiceInList,
+} from '../../utils/apiLifecycleHelper.js';
 
 test.describe('Invoice API', () => {
   test('TC-API-05 @Smoke @Regression Generate invoice COD and verify response', async ({
     authApi,
+    productApi,
     cartApi,
     invoiceApi,
-    request,
+    testUser,
   }) => {
-    const user = createUser();
-    await authApi.register(user);
-    const loginRes = await authApi.login(user.email, user.password);
-    const token = (await parseJson(loginRes)).access_token;
-    authApi.setToken(token);
-    cartApi.setToken(token);
-    invoiceApi.setToken(token);
+    await authenticateForPurchase(authApi, testUser, productApi, cartApi, invoiceApi);
+    const [product] = await discoverInStockProducts(productApi, 1);
 
-    const productId = await getFirstInStockProductId(request);
-    const cartRes = await cartApi.createCart();
-    const { id: cartId } = await parseJson(cartRes);
-    await cartApi.addProduct(cartId, productId, 1);
+    const cartId = await createShoppingCart(cartApi);
+    await addProductToCart(cartApi, cartId, product.id, 1);
 
-    const invoicePayload = createBillingAddress(cartId);
-    const invoiceRes = await invoiceApi.createInvoice(invoicePayload);
-    assertStatus(invoiceRes, 201);
-    const invoice = await parseJson(invoiceRes);
-    expect(invoice).toBeTruthy();
+    const invoice = await generateInvoice(invoiceApi, cartId);
+    expect(invoice.invoicelines.some((line) => line.product_id === product.id)).toBe(true);
+
+    const listed = await verifyInvoiceInList(invoiceApi, invoice.id);
+    expect(listed.invoice_number).toBe(invoice.invoice_number);
+    expect(listed.total).toBe(invoice.total);
   });
 
-  test('TC-API-06 @Regression @negative User can only access own invoices (IDOR)', async ({ authApi, invoiceApi }) => {
+  test('TC-API-06 @Regression @negative User can only access own invoices (IDOR)', async ({
+    authApi,
+    productApi,
+    cartApi,
+    invoiceApi,
+  }) => {
     const userA = createUser();
     const userB = createUser();
-    await authApi.register(userA);
-    await authApi.register(userB);
 
-    const loginA = await authApi.login(userA.email, userA.password);
-    const tokenA = (await parseJson(loginA)).access_token;
-    invoiceApi.setToken(tokenA);
-    const invoicesA = await invoiceApi.getInvoices();
-    assertStatus(invoicesA, 200);
+    await authenticateForPurchase(authApi, userA, productApi, cartApi, invoiceApi);
+    const [product] = await discoverInStockProducts(productApi, 1);
+    const cartId = await createShoppingCart(cartApi);
+    await addProductToCart(cartApi, cartId, product.id, 1);
+    const invoiceA = await generateInvoice(invoiceApi, cartId);
 
-    const loginB = await authApi.login(userB.email, userB.password);
-    const tokenB = (await parseJson(loginB)).access_token;
-    invoiceApi.setToken(tokenB);
-    const invoicesB = await invoiceApi.getInvoices();
-    assertStatus(invoicesB, 200);
+    await authenticateForPurchase(authApi, userB, invoiceApi);
+    const invoicesResponse = await invoiceApi.getInvoices();
+    assertStatus(invoicesResponse, 200);
+    const invoicesB = extractPaginatedData(await parseJson(invoicesResponse));
+    const invoiceIdsB = invoicesB.map((invoice) => invoice.id);
 
-    const bodyA = await parseJson(invoicesA);
-    const bodyB = await parseJson(invoicesB);
-    const idsA = JSON.stringify(bodyA);
-    const idsB = JSON.stringify(bodyB);
-    expect(idsA).not.toEqual(idsB);
+    expect(invoiceIdsB).not.toContain(invoiceA.id);
+
+    const foreignInvoiceResponse = await invoiceApi.getInvoice(invoiceA.id);
+    expect([401, 403, 404]).toContain(foreignInvoiceResponse.status());
   });
 });

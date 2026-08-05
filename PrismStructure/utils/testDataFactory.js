@@ -18,6 +18,7 @@ export function getSearchKeyword() {
 
 export function createUser(overrides = {}) {
   const timestamp = Date.now();
+  const uniqueSuffix = faker.string.alphanumeric(6);
   const password = env.testUserPassword();
   const dob = faker.date.birthdate({ min: staticData.user.dobMinAge, max: staticData.user.dobMaxAge, mode: 'age' });
   const dobFormatted = dob.toISOString().split('T')[0];
@@ -25,7 +26,7 @@ export function createUser(overrides = {}) {
   return {
     first_name: faker.person.firstName(),
     last_name: faker.person.lastName(),
-    email: `testuser_${timestamp}@example.com`,
+    email: `testuser_${timestamp}_${uniqueSuffix}@example.com`,
     password,
     dob: dobFormatted,
     phone: faker.string.numeric(10),
