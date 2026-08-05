@@ -7,8 +7,11 @@ auth.json
 # Test artifacts
 test-results/
 playwright-report/
+PrismStructure/reports/html/
+PrismStructure/test-results/
 execution-evidence/
 node_modules/
+PrismStructure/node_modules/
 
 # OS and IDE
 .DS_Store
