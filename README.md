@@ -234,6 +234,7 @@ QA-Assignment/
 ├── test-data/
 │   └── static-test-data.json          # Billing, search keywords, DOB rules
 │
+├── ai-prompt-history.md               # Consolidated AI prompt history (23 entries)
 ├── prompts/                           # AI prompt history (Phases 1–8)
 │
 └── PrismStructure/                    # Playwright automation framework
@@ -321,6 +322,7 @@ Assessment limits each automation tier to **5–8 tests**. Current counts: **8 U
 |----------|-------------|
 | [project-info.md](project-info.md) | Strategy, risks, AI usage, maintainability |
 | [PrismStructure/README.md](PrismStructure/README.md) | Framework quick reference |
+| [ai-prompt-history.md](ai-prompt-history.md) | Consolidated AI prompt history (23 entries) |
 | [prompts/](prompts/) | Full AI prompt history by phase |
 | [RequirementTraceabilityMatrix.csv](RequirementTraceabilityMatrix.csv) | Requirement traceability |
 
