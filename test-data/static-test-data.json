@@ -1,0 +1,25 @@
+{
+  "billing": {
+    "billing_street": "Zoey Shore",
+    "billing_city": "Hesselbury",
+    "billing_state": "Florida",
+    "billing_country": "TG",
+    "billing_postal_code": "1234AA",
+    "payment_method": "cash-on-delivery",
+    "payment_details": {}
+  },
+  "search": {
+    "validKeyword": "hammer",
+    "noResultsKeyword": "zzznomatch999"
+  },
+  "user": {
+    "emailPattern": "testuser_{timestamp}@example.com",
+    "dobMinAge": 18,
+    "dobMaxAge": 75,
+    "passwordRules": "min 8 chars; uppercase + lowercase + number + symbol"
+  },
+  "environment": {
+    "baseUrl": "https://practicesoftwaretesting.com",
+    "apiBaseUrl": "https://api.practicesoftwaretesting.com"
+  }
+}

@@ -1,0 +1,16 @@
+# Environment and secrets
+.env
+.env.local
+*.token
+auth.json
+
+# Test artifacts
+test-results/
+playwright-report/
+execution-evidence/
+node_modules/
+
+# OS and IDE
+.DS_Store
+.idea/
+.vscode/
