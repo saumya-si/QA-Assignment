@@ -27,7 +27,7 @@ This project delivers a complete QA workflow for the Toolshop ecommerce demo app
 | UI + API automation | `PrismStructure/` |
 | Test data (static) | `test-data/static-test-data.json` |
 | Prompt history | `prompts/` (Phases 1–7) |
-| Execution reports | `PrismStructure/reports/html/`, `reports/json/` |
+| Execution reports | `PrismStructure/reports/execution-summary.md` (committed), `reports/html/` (local) |
 
 ### Final execution status
 

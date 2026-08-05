@@ -211,10 +211,11 @@ Reports are generated automatically after every test run.
 
 | Format | Path | How to open |
 |--------|------|-------------|
-| **HTML** | `PrismStructure/reports/html/index.html` | `npm run report` (from `PrismStructure/`) |
-| **JSON** | `PrismStructure/reports/json/results.json` | Parse for CI integration |
-| **Screenshots** | `PrismStructure/test-results/` | On failure only |
-| **Video** | `PrismStructure/test-results/` | On failure only |
+| **Execution summary** | `PrismStructure/reports/execution-summary.md` | Committed redacted pass/fail evidence (no secrets) |
+| **HTML** | `PrismStructure/reports/html/index.html` | `npm run report` (from `PrismStructure/`) — gitignored, regenerate locally |
+| **JSON** | `PrismStructure/reports/json/results.json` | Parse for CI integration — not committed |
+| **Screenshots** | `PrismStructure/test-results/` | On failure only — gitignored |
+| **Video** | `PrismStructure/test-results/` | On failure only — gitignored |
 
 HTML report includes per-test status, duration, steps, and failure attachments.
 
