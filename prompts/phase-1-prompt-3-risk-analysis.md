@@ -40,9 +40,9 @@
 | AUTH-R01 | TC-UI-01, TC-API-01 (register) | UI + API |
 | AUTH-R02 | TC-UI-02, TC-API-02 (login) | UI + API |
 | AUTH-R03 | TC-UI-02 (profile assertion) | UI |
-| AUTH-R04 | TC-API-01, TC-API-02 | API |
-| AUTH-R05 | TC-UI-03, TC-API-03 (invalid login) | UI + API |
-| AUTH-R06 | TC-UI-08, TC-API-04 (duplicate email) | UI + API |
+| AUTH-R04 | TC-API-02 (token in login response) | API |
+| AUTH-R05 | TC-UI-03, TC-API-02 (invalid login) | UI + API |
+| AUTH-R06 | TC-UI-08, TC-API-01 (duplicate email) | UI + API |
 
 ---
 
@@ -60,10 +60,10 @@
 
 | Risk ID | Mapped Test | Layer |
 |---------|-------------|-------|
-| CART-R01 | TC-UI-04, TC-UI-05, TC-API-05 (create cart + add product) | UI + API |
+| CART-R01 | TC-UI-05, TC-UI-07, TC-API-03 (create cart + add product) | UI + API |
 | CART-R02 | TC-UI-07 (multi-item E2E) | UI |
-| CART-R03 | TC-UI-05 (qty update + total assertion) | UI + API |
-| CART-R04 | TC-API-05 (POST /carts, POST /carts/{id}/product/{productId}) | API |
+| CART-R03 | TC-UI-05 (qty update + total assertion), TC-API-04 | UI + API |
+| CART-R04 | TC-API-03 (POST /carts, POST /carts/{id}/product/{productId}) | API |
 | CART-R05 | Manual TC-MAN-05 | UI |
 
 ### Cart State Machine (for traceability)
@@ -90,8 +90,8 @@
 
 | Risk ID | Mapped Test | Layer |
 |---------|-------------|-------|
-| CHK-R01 | TC-UI-07, TC-API-07 (POST /invoices, `payment_method: cash-on-delivery`) | UI + API |
-| CHK-R02 | Manual TC-MAN-08; TC-API-08 (missing billing field → 422) | UI + API |
+| CHK-R01 | TC-UI-07, TC-API-05 (POST /invoices, `payment_method: cash-on-delivery`) | UI + API |
+| CHK-R02 | Manual TC-MAN-08 (missing billing field → 422) | Manual + API |
 | CHK-R03 | TC-UI-07 (logged-in E2E); TC-API-06 (bearer token required) | UI + API |
 | CHK-R04 | Manual TC-MAN-09 | UI |
 
@@ -126,7 +126,7 @@
 |---------|-------------|-------|
 | DCF-R01 | TC-UI-07 (explicit double-click Confirm step) | UI |
 | DCF-R02 | Manual TC-MAN-10 (single confirm → no invoice) | UI |
-| DCF-R03 | Manual TC-MAN-11; TC-API-09 (verify single invoice per cart) | UI + API |
+| DCF-R03 | Manual TC-MAN-11 (verify single invoice per cart) | Manual |
 
 ### Double-Confirm Test Design Note
 
@@ -155,10 +155,10 @@ Assert:   Invoice visible under My Invoices with matching cart total
 | Risk ID | Mapped Test | Layer |
 |---------|-------------|-------|
 | INV-R01 | TC-UI-07 (My Invoices navigation + visibility) | UI |
-| INV-R02 | TC-API-07 (POST /invoices → 201) | API |
-| INV-R03 | TC-UI-07 (line item assertions); TC-API-07 (response body validation) | UI + API |
+| INV-R02 | TC-API-05 (POST /invoices → 201) | API |
+| INV-R03 | TC-UI-07 (line item assertions); TC-API-05 (response body validation) | UI + API |
 | INV-R04 | TC-UI-07 (invoice ID assertion) | UI |
-| INV-R05 | TC-API-10 (user A token cannot read user B invoices) | API |
+| INV-R05 | TC-API-06 (user A token cannot read user B invoices) | API |
 
 ---
 
@@ -225,6 +225,19 @@ Assert:   Invoice visible under My Invoices with matching cart total
 
 ---
 
+## 10. API Automation Scope (6 Tests — aligned to 5–8 constraint)
+
+| Test ID | Title | Tags | Covers risks |
+|---------|-------|------|--------------|
+| **TC-API-01** | Register valid user (201) + duplicate email (409) | `@Smoke` `@Regression` | AUTH-R01, AUTH-R06 |
+| **TC-API-02** | Login valid (200 + token) + invalid credentials (401) | `@Smoke` `@Regression` | AUTH-R02, AUTH-R04, AUTH-R05 |
+| **TC-API-03** | Create cart + add product + verify cart contents | `@Smoke` | CART-R01, CART-R04 |
+| **TC-API-04** | Update product quantity + verify cart total | `@Regression` | CART-R03 |
+| **TC-API-05** | Generate invoice COD (201) + verify response body | `@Smoke` `@Regression` | CHK-R01, INV-R02, INV-R03 |
+| **TC-API-06** | GET /invoices — user sees only own data (IDOR negative) | `@Regression` | INV-R05, CHK-R03 |
+
+---
+
 ## AI Response Summary
 
-Created risk register of **23 requirements** across 5 focus areas (Authentication, Cart State, Checkout, Double Confirmation, Invoice Generation). Identified **8 Critical**, **9 High**, **6 Medium** risks with UI/API coverage mapping, Smoke/Regression tags, and traceability to planned TC-UI and TC-API tests. Double-confirm is UI-only critical risk requiring explicit two-click automation in TC-UI-07.
+Created risk register of **23 requirements** across 5 focus areas (Authentication, Cart State, Checkout, Double Confirmation, Invoice Generation). Identified **8 Critical**, **9 High**, **6 Medium** risks with UI/API coverage mapping, Smoke/Regression tags, and traceability to **8 UI** and **6 API** automated tests. Double-confirm is UI-only critical risk requiring explicit two-click automation in TC-UI-07.

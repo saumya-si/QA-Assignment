@@ -31,9 +31,11 @@ Toolshop is a demo ecommerce application for software testing practice. It suppo
 
 | Role | Email | Password |
 |------|-------|----------|
-| Customer | `customer@practicesoftwaretesting.com` | `welcome01` |
-| Customer 2 | `customer2@practicesoftwaretesting.com` | `welcome01` |
-| Admin | `admin@practicesoftwaretesting.com` | `welcome01` |
+| Customer | `customer@practicesoftwaretesting.com` | via `TEST_CUSTOMER_PASSWORD` env var |
+| Customer 2 | `customer2@practicesoftwaretesting.com` | via `TEST_CUSTOMER2_PASSWORD` env var |
+| Admin | `admin@practicesoftwaretesting.com` | via `TEST_ADMIN_PASSWORD` env var |
+
+> Passwords are not stored in repo — configure in `.env` (see `.env.example` in Phase 2).
 
 ---
 
@@ -184,6 +186,8 @@ Scoped to assessment limit of **5–8 UI automated tests**, covering both ACs wi
 |---------|-------|------|----|-------------------|
 | **TC-UI-01** | Register new user with valid data | `@Smoke` `@positive` | AC1 | REG-01 |
 | **TC-UI-02** | Login with valid credentials and verify profile | `@Smoke` `@positive` | AC1 | LOG-01, LOG-05 |
+
+> **Test isolation:** TC-UI-02 must be self-contained — register a fresh user in `beforeEach` or use env-based demo account. Do not depend on TC-UI-01 execution order.
 | **TC-UI-03** | Login with invalid password shows error | `@Regression` `@negative` | AC1 | LOG-02 |
 | **TC-UI-04** | Browse products and verify listing loads | `@Smoke` `@positive` | AC2 | BRW-01 |
 | **TC-UI-05** | Add product to cart and update quantity | `@Regression` `@positive` | AC2 | CRT-01, CRT-03, CRT-06 |
@@ -254,7 +258,7 @@ Scoped to assessment limit of **5–8 UI automated tests**, covering both ACs wi
 | Data Type | Approach |
 |-----------|----------|
 | New user | `faker`-based unique email per run; password meeting complexity rules |
-| Existing user | `customer@practicesoftwaretesting.com` / `welcome01` for login-negative only |
+| Existing user | `customer@practicesoftwaretesting.com` + env password for login-negative only |
 | Billing address | Use assessment example: Zoey Shore, Hesselbury, Florida, TG, 1234AA |
 | Products | Select first in-stock item from listing at runtime |
 | Cart | Build fresh cart per test; avoid shared state |
