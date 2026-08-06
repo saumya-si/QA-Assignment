@@ -146,9 +146,23 @@ Full risk analysis: `prompts/phase-1-prompt-3-risk-analysis.md`
 5. **No fixed waits** — Playwright auto-waiting, `expect.poll()`, `waitForURL()`, `waitForLoadState()`
 6. **Traceability** — every automated test maps to `TC-UI-##` or `TC-API-##` and RTM requirements
 
+### State transitions (assessment “state machine”)
+
+The PDF Core AC references valid/invalid **status transitions**. For Toolshop v5.0 this maps to **ecommerce flow states**, not a formal state-machine diagram:
+
+| Domain | States / transitions | Manual + automation evidence |
+|--------|----------------------|------------------------------|
+| **Authentication** | Anonymous → registered → logged in; invalid credentials rejected | TC-MAN-01/02/08, TC-UI-01–03/08, TC-API-01/02/08 |
+| **Cart** | Empty → items added → quantity updated → checkout blocked when empty | TC-MAN-06 (multi-item + quantity), TC-UI-05/07, TC-API-07 |
+| **Checkout (COD)** | Billing entered → single Confirm (incomplete) → double Confirm (complete + invoice) | TC-MAN-05/06/07, TC-UI-06/07 |
+| **Invoice** | None → created after successful checkout → listed under My Invoices | TC-MAN-06, TC-UI-07, TC-API-07 |
+| **API authorization** | Missing/invalid token → 401; valid token → resource access; IDOR blocked | TC-API-06/09 |
+
+Invalid transitions (e.g. single Confirm, empty cart checkout, duplicate email) are covered by negative and edge tests in all three tiers.
+
 ### Manual vs automated scope
 
-- **8 manual cases** (`FunctionalTestCase.csv`) — functional, edge, negative, and **non-functional** scenarios; redundant functional flows (search, multi-item cart) covered in UI automation TC-UI-07
+- **8 manual cases** (`FunctionalTestCase.csv`) — functional, edge, negative, and **non-functional** scenarios; **TC-MAN-06** covers AC2 UI search, multi-item cart, and quantity update alongside invoice verification
 - **8 UI + 8 API automated** — assessment cap; positives consolidated into E2E lifecycle tests where redundant
 
 ### Manual test design (functional, edge, negative, non-functional)
@@ -163,7 +177,7 @@ AI-assisted manual design followed a **risk-based mix** within the 8-case cap:
 | **Non-functional (security)** | TC-MAN-03 | HTTPS enforcement and protected-route access control without authentication |
 | **Non-functional (performance)** | TC-MAN-04 | Catalog page load time within acceptable threshold (≤ 5 s average) |
 
-Product **search** and **multi-item cart quantity** were removed from the manual tier because TC-UI-07 automates both; manual effort shifted to NFR coverage required by the assessment. Accessibility and load testing at scale remain out of scope for this demo app but are noted as future NFR candidates.
+**AC2 UI breadth:** TC-MAN-06 exercises product **search**, **multiple items**, and **cart quantity update** before COD checkout and invoice verification (mirrors TC-UI-07). NFR cases (TC-MAN-03/04) remain manual-only. Accessibility and load testing at scale are out of scope for this demo app.
 
 ---
 
@@ -178,7 +192,7 @@ Product **search** and **multi-item cart quantity** were removed from the manual
 | TC-MAN-03 | **Non-functional (security)** | HTTPS + protected routes require auth |
 | TC-MAN-04 | **Non-functional (performance)** | Catalog page load time |
 | TC-MAN-05 | Functional | COD checkout (double confirm) |
-| TC-MAN-06 | Functional | Full purchase + invoice verification |
+| TC-MAN-06 | Functional | Search, multi-item cart, quantity, invoice |
 | TC-MAN-07 | Edge | Single Confirm does not generate invoice |
 | TC-MAN-08 | Functional (negative) | Duplicate email registration |
 
@@ -258,6 +272,21 @@ Full strategy: `prompts/phase-3-prompt-9-test-data-strategy.md`
 
 **Primary tool:** Cursor AI (Agent mode with Playwright, shell, and MCP tools)
 
+### How SUT context is provided to Cursor
+
+Context is layered so each prompt stays focused without re-pasting the whole assessment:
+
+| Source | What it gives the AI | When used |
+|--------|----------------------|-----------|
+| **`QA Practical Assessment.pdf`** | Deliverables, AC1/AC2, 5–8 test cap, submission structure | Phase 1 requirements extraction |
+| **`.cursor/rules/qa-assignment-conventions.mdc`** | Repo conventions, test-ID naming, secrets policy | Every agent session in this project |
+| **`.cursor/skills/toolshop-qa-workflow/`** | Phase workflow, SUT URLs, double-confirm quirk | Automation and debugging sessions |
+| **OpenAPI spec** | `https://api.practicesoftwaretesting.com/docs?api-docs.json` — endpoints, schemas, status codes | API analysis and client design (Phase 6) |
+| **`prompts/phase-*-prompt-*.md`** | Prior phase outputs (risks, CSV, framework layout) | Next-phase prompts — one task per chat |
+| **Live SUT + test output** | Browser/API failures, Playwright traces, console logs | Debugging (Phase 7) — no `.env` or tokens in prompts |
+
+Passwords and bearer tokens are **never** pasted into prompts; only public URLs, OpenAPI shapes, and redacted error messages.
+
 ### How AI was used by phase
 
 | Phase | Activity | AI contribution | Human validation |
@@ -313,6 +342,14 @@ Reviewed AI outputs for: test count caps, password in repo, RTM accuracy, and as
 ---
 
 ## 9. Reusability and Maintainability Considerations
+
+### Reusing this AI-assisted QA workflow on real projects
+
+1. **Phase the work** — requirements → manual design → data strategy → framework → UI/API automation → execute → document (same order as Phases 1–9 here).
+2. **One focused prompt per task** — summarize each Cursor chat into `ai-prompts/` (or team equivalent) with Prompt → AI Response → Validation Notes.
+3. **Validate before commit** — run tests against a live or staging SUT; never commit unreviewed AI-generated specs.
+4. **Pin SUT context once** — project rules/skills + OpenAPI or product docs so later prompts do not re-explain the application.
+5. **Keep artifacts traceable** — RTM or equivalent links requirements to `TC-##` IDs across manual and automation tiers.
 
 ### Framework structure (`PrismStructure/`)
 
@@ -375,6 +412,7 @@ PrismStructure/
 | Final execution proof | `prompts/phase-7-prompt-20-final-test-execution.md` |
 | Debug history | `prompts/phase-7-prompt-19-debug-test-failures.md` |
 | Execution screenshots | `PrismStructure/reports/execution-evidence/screenshots/` |
+| API test collection (Playwright) | `PrismStructure/reports/execution-evidence/api-test-collection.md` |
 | Screenshot capture script | `PrismStructure/scripts/capture-execution-screenshots.mjs` |
 
 ---

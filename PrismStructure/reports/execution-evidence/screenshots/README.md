@@ -25,6 +25,7 @@ npm run capture:screenshots
 ## Policy
 
 - **Committed to repo:** Redacted PNGs in this folder + index + text logs in `execution-evidence/`
+- **API collection:** `../api-test-collection.md` — Playwright API tests as executable collection (assessment alternative to Postman)
 - **Not committed:** Raw failure artifacts in `test-results/` and generated `reports/html/` (gitignored; may contain session URLs or tokens)
 
 All listed manual tests executed **2026-08-06** with status **Passed** — see `../manual-test-execution.md` and `FunctionalTestCase.csv`.

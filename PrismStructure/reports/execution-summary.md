@@ -26,11 +26,11 @@ Detailed results: `execution-evidence/manual-test-execution.md`
 
 | Suite | Command | Tests | Passed | Failed | Flaky | Duration | Exit code |
 |-------|---------|-------|--------|--------|-------|----------|-----------|
-| **Full** | `npm test` | 16 | 15 | 0 | 1 | ~3.3 min | 0 |
-| **Smoke** | `npm run test:smoke` | 6 | 6 | 0 | 0 | ~1.2 min | 0 |
-| **Regression** | `npm run test:regression` | 13 | 13 | 0 | 0 | ~2.4 min | 0 |
+| **Full** | `npm test` | 16 | **16** | 0 | 0 | ~2.4 min | 0 |
+| **Smoke** | `npm run test:smoke` | 6 | 6 | 0 | 0 | ~1.0 min | 0 |
+| **Regression** | `npm run test:regression` | 13 | 13 | 0 | 0 | ~2.0 min | 0 |
 
-**Flaky test:** `TC-UI-07` (Complete purchase journey with COD and invoice verification) — failed once on first Confirm click timeout, **passed on retry** (`retries: 1` in `checkout.spec.js`). Documented known SUT/UI timing behavior; not a functional defect.
+**Note:** `TC-UI-07` has `retries: 1` in `checkout.spec.js` for occasional SUT timing sensitivity. Latest validation run completed **16/16 on first attempt** with no flaky results.
 
 ---
 
@@ -52,7 +52,7 @@ Detailed results: `execution-evidence/manual-test-execution.md`
 | TC-UI-04 | UI | Regression | Pass |
 | TC-UI-05 | UI | Regression | Pass |
 | TC-UI-06 | UI | Regression | Pass |
-| TC-UI-07 | UI | Smoke, Regression | **Flaky → Pass (retry)** |
+| TC-UI-07 | UI | Smoke, Regression | Pass |
 | TC-UI-08 | UI | Regression | Pass |
 
 ---
@@ -81,10 +81,12 @@ All **13** regression-tagged tests passed (8 API + 5 UI dual-tagged + UI-only re
 | Artifact | Committed to repo | Notes |
 |----------|-------------------|-------|
 | This summary | **Yes** | Redacted, review-safe |
-| `execution-evidence/` | **Yes** | Console log, manual results, screenshot index |
+| `execution-evidence/` | **Yes** | Console log, manual results, API collection index |
+| `execution-evidence/screenshots/` | **Yes** | Redacted PNGs — regenerate with `npm run capture:screenshots` |
+| `execution-evidence/api-test-collection.md` | **Yes** | Playwright API tests as executable collection |
 | `reports/html/` | **No** (gitignored) | Regenerate with `npm test` + `npm run report` |
-| `reports/json/results.json` | **No** (local only) | May contain request metadata — not committed |
-| `test-results/` | **No** (gitignored) | Raw screenshots/videos/traces |
+| `reports/json/results.json` | **No** (gitignored) | May contain request metadata — not committed |
+| `test-results/` | **No** (gitignored) | Raw failure screenshots/videos/traces |
 | `.env` | **No** (gitignored) | Required for local execution |
 
 ---
@@ -99,8 +101,9 @@ npx playwright install chromium
 npm test
 npm run test:smoke
 npm run test:regression
+npm run capture:screenshots   # optional — refresh committed PNG evidence
 ```
 
 ---
 
-*Generated during Phase 9 — Prompt 25 (Final Audit Gap Resolution).*
+*Last refreshed: 2026-08-06 — 16/16 automation + 8/8 manual passed (no flaky results in latest run).*

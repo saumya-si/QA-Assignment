@@ -33,7 +33,7 @@
 | TC-MAN-03 | HTTPS + protected routes | Non-functional | @Regression | **Passed** | HTTPS valid; unauthenticated routes redirected to login |
 | TC-MAN-04 | Catalog load time | Non-functional | @Regression | **Passed** | Avg load 2.2 s (3 runs; threshold ≤ 5 s) |
 | TC-MAN-05 | COD checkout (double confirm) | Functional | @Smoke | **Passed** | Order completed after two Confirm clicks |
-| TC-MAN-06 | Invoice verification | Functional | @Smoke | **Passed** | Invoice visible with correct line items and total |
+| TC-MAN-06 | Invoice after search + multi-item cart | Functional | @Smoke | **Passed** | Search, 2 items, qty updated; invoice matched cart |
 | TC-MAN-07 | Single confirm edge case | Edge | @Regression | **Passed** | No invoice after one Confirm; checkout incomplete |
 | TC-MAN-08 | Duplicate email registration | Functional | @Regression | **Passed** | Registration rejected for existing email |
 
@@ -50,5 +50,6 @@ Redacted screenshot PNGs are committed in `screenshots/` (see `screenshots/READM
 | Artifact | Location |
 |----------|----------|
 | Manual test definitions | `FunctionalTestCase.csv` (Status = Passed) |
+| API test collection | `api-test-collection.md` (Playwright executable collection) |
 | Automation evidence | `automation-console.log`, `../execution-summary.md` |
 | Phase 7 automation validation | `prompts/phase-7-prompt-20-final-test-execution.md` |

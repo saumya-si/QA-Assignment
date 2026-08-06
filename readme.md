@@ -127,6 +127,14 @@ npx playwright test --grep "TC-UI-07"
 npm run report
 ```
 
+### Regenerate execution-evidence screenshots
+
+```bash
+npm run capture:screenshots
+```
+
+Writes redacted PNGs to `reports/execution-evidence/screenshots/` (committed to repo).
+
 ---
 
 ## Test Inventory
@@ -212,7 +220,8 @@ Reports are generated automatically after every test run.
 | Format | Path | How to open |
 |--------|------|-------------|
 | **Execution summary** | `PrismStructure/reports/execution-summary.md` | Committed redacted pass/fail evidence (no secrets) |
-| **Execution evidence** | `PrismStructure/reports/execution-evidence/` | Console log, manual results, screenshot index |
+| **Execution evidence** | `PrismStructure/reports/execution-evidence/` | Console log, manual results, API collection index |
+| **Execution screenshots** | `PrismStructure/reports/execution-evidence/screenshots/` | Committed redacted PNGs — regenerate with `npm run capture:screenshots` |
 | **HTML** | `PrismStructure/reports/html/index.html` | `npm run report` (from `PrismStructure/`) — gitignored, regenerate locally |
 | **JSON** | `PrismStructure/reports/json/results.json` | Parse for CI integration — not committed |
 | **Screenshots** | `PrismStructure/test-results/` | On failure — kept for failed attempts and retries (`retain-on-failure-and-retries`) |
@@ -275,7 +284,10 @@ QA-Assignment/
     │   └── api/                       # 8 API specs (TC-API-01, 02, 06 – 11)
     └── reports/
         ├── html/                      # HTML report (generated)
-        └── json/                      # JSON results (generated)
+        ├── json/                      # JSON results (generated)
+        └── execution-evidence/
+            ├── screenshots/           # Committed PNG evidence
+            └── api-test-collection.md # Playwright API collection index
 ```
 
 ---

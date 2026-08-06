@@ -42,24 +42,27 @@ Billing State: Florida
 Billing Country: TG
 Billing Postal Code: 1234AA
 Payment Method: Cash on Delivery",Checkout completes successfully after double Confirm; order confirmation or success message is displayed; no payment errors shown,COD checkout completed after double Confirm; success message displayed,Passed
-TC-MAN-06,AC2-UI;INV-R01;INV-R03;INV-R04,Invoice verification under My Invoices after purchase,Functional,@Smoke,Critical,User is logged in; Cart is empty at start of test,"1. Add at least one in-stock product to cart
-2. Proceed to checkout
-3. Enter valid billing address details
-4. Select payment method: Cash on Delivery
-5. Click Confirm button TWICE
-6. Verify checkout success message is displayed
-7. Navigate to My Invoices (account menu)
-8. Locate the most recent invoice in the list
-9. Open / view invoice details
-10. Verify invoice ID is displayed
-11. Verify line items match cart products and quantities
-12. Verify total amount matches cart total at checkout","Billing Street: Zoey Shore
+TC-MAN-06,AC2-UI;INV-R01;INV-R03;INV-R04;CART-R02;CART-R03,Invoice verification after search multi-item cart and quantity update,Functional,@Smoke,Critical,User is logged in; Cart is empty at start of test,"1. Search for a product (e.g. hammer) and add one result to cart
+2. Browse the product catalog and add a second in-stock product to cart
+3. Open cart and increase quantity of one line item (e.g. set to 2)
+4. Proceed to checkout
+5. Enter valid billing address details
+6. Select payment method: Cash on Delivery
+7. Click Confirm button TWICE
+8. Verify checkout success message is displayed
+9. Navigate to My Invoices (account menu)
+10. Locate the most recent invoice in the list
+11. Open / view invoice details
+12. Verify invoice ID is displayed
+13. Verify line items reflect both products and updated quantities
+14. Verify total amount matches cart total at checkout","Billing Street: Zoey Shore
 Billing City: Hesselbury
 Billing State: Florida
 Billing Country: TG
 Billing Postal Code: 1234AA
 Payment Method: Cash on Delivery
-Products: at least one in-stock item added in step 1",Invoice appears in My Invoices list; invoice ID is visible; line items and totals match the completed order,"Invoice listed under My Invoices; INV ID, line items, and total matched order",Passed
+Search keyword: hammer
+Products: two in-stock items; one line quantity updated to 2",Invoice appears in My Invoices list; invoice ID visible; line items and totals match search + browse cart with updated quantities,"Searched hammer + browsed second item; qty updated to 2; invoice line items and total matched cart",Passed
 TC-MAN-07,AC2-UI;DCF-R02,Single Confirm click does not generate invoice (edge case),Functional,@Regression,High,User is logged in; Cart contains at least one item; Fresh test user or empty invoice history preferred,"1. Add item to cart and proceed to checkout
 2. Enter valid billing details
 3. Select Cash on Delivery
