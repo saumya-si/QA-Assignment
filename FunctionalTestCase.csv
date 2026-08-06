@@ -18,20 +18,18 @@ TC-MAN-02,AC1-UI;AUTH-R05,Invalid login attempt shows error message,Functional,@
 4. Click Login / Submit
 5. Observe page response and error message","Email: customer@practicesoftwaretesting.com (or registered test user)
 Password: InvalidPassword@99","Login is rejected; user remains on login page; clear error message displayed (e.g. invalid credentials); user is not redirected to account/home",,
-TC-MAN-03,AC2-UI;BRW-03,Product search returns matching results,Functional,@Regression,Medium,Toolshop application is accessible; Product catalog is available; User may be guest or logged in,"1. Navigate to home / product listing page
-2. Locate search input field
-3. Enter a known product keyword (e.g. hammer or drill)
-4. Submit search or press Enter
-5. Review search results list","Search term: hammer (or any known in-stock product name from catalog)","Search results page/list displays one or more products matching the search term; product name or description contains the keyword",,
-TC-MAN-04,AC2-UI;CART-R01;CART-R02;CART-R03,Add multiple items to cart and update quantity,Functional,@Regression,High,User is logged in; At least two in-stock products exist in catalog,"1. Browse product catalog
-2. Open first in-stock product detail; add to cart
-3. Return to catalog; open second different product; add to cart
-4. Open cart / view cart
-5. Verify both products are listed with correct quantities
-6. Increase quantity of one line item
-7. Verify line total and cart total recalculate","Product A: First in-stock item (qty 1)
-Product B: Second different in-stock item (qty 1)
-Updated qty: 2 for Product A","Cart shows 2 distinct products; quantity update reflects on line item; cart total updates correctly after quantity change",,
+TC-MAN-03,NFR-SEC-01;NFR-SEC-02;AC1-UI,Protected account routes require authentication over HTTPS,Non-functional,@Regression,High,Toolshop application is accessible; User is not logged in; Browser supports HTTPS,"1. Navigate to https://practicesoftwaretesting.com/
+2. Verify the browser URL uses HTTPS (padlock / valid certificate; no mixed-content warnings on the login page)
+3. Without logging in, attempt to open a protected account URL directly (e.g. /account/profile, /checkout, or /account/invoices)
+4. Observe whether account or checkout content is shown
+5. Repeat for at least one additional protected route if applicable","Base URL: https://practicesoftwaretesting.com/
+Protected routes: /account/profile, /checkout, /account/invoices (or equivalent account pages)","Application is served over HTTPS; unauthenticated users cannot view protected account/checkout pages and are redirected to login or shown an access-denied state; no profile, invoice, or checkout data is exposed without authentication",,
+TC-MAN-04,NFR-PERF-01;AC2-UI,Product catalog page loads within acceptable time,Non-functional,@Regression,Medium,Toolshop application is accessible; Stable network connection; Browser cache cleared or hard refresh used,"1. Open browser developer tools (Network tab) or use a stopwatch
+2. Navigate to the home / product listing page (hard refresh or cleared cache)
+3. Record the time until the product listing is visible and interactive (products rendered, no loading spinner)
+4. Repeat steps 2–3 two more times
+5. Calculate the average load time across three attempts","URL: https://practicesoftwaretesting.com/
+Acceptance threshold: ≤ 5 seconds average load time on standard broadband","Product catalog page loads and becomes interactive within 5 seconds on average across three attempts; no prolonged blank screen or timeout errors under normal network conditions",,
 TC-MAN-05,AC2-UI;CHK-R01;DCF-R01,Checkout completes using Cash on Delivery payment,Functional,@Smoke,Critical,User is logged in; Cart contains at least one item,"1. Open cart with items
 2. Proceed to checkout
 3. Enter valid billing address details

@@ -143,8 +143,22 @@ Full risk analysis: `prompts/phase-1-prompt-3-risk-analysis.md`
 
 ### Manual vs automated scope
 
-- **8 manual cases** (`FunctionalTestCase.csv`) — flows not fully automated (guest checkout, filters, PDF download, etc.)
+- **8 manual cases** (`FunctionalTestCase.csv`) — functional, edge, negative, and **non-functional** scenarios; redundant functional flows (search, multi-item cart) covered in UI automation TC-UI-07
 - **8 UI + 8 API automated** — assessment cap; positives consolidated into E2E lifecycle tests where redundant
+
+### Manual test design (functional, edge, negative, non-functional)
+
+AI-assisted manual design followed a **risk-based mix** within the 8-case cap:
+
+| Category | Manual tests | Rationale |
+|----------|--------------|-----------|
+| **Functional (positive)** | TC-MAN-01, 05, 06 | Core AC1/AC2 flows requiring human verification (profile, COD, invoice) |
+| **Functional (negative)** | TC-MAN-02, 08 | Invalid login and duplicate registration |
+| **Edge** | TC-MAN-07 | Double-confirm invoice quirk — single Confirm must not complete order |
+| **Non-functional (security)** | TC-MAN-03 | HTTPS enforcement and protected-route access control without authentication |
+| **Non-functional (performance)** | TC-MAN-04 | Catalog page load time within acceptable threshold (≤ 5 s average) |
+
+Product **search** and **multi-item cart quantity** were removed from the manual tier because TC-UI-07 automates both; manual effort shifted to NFR coverage required by the assessment. Accessibility and load testing at scale remain out of scope for this demo app but are noted as future NFR candidates.
 
 ---
 
@@ -152,16 +166,18 @@ Full risk analysis: `prompts/phase-1-prompt-3-risk-analysis.md`
 
 ### Manual tests (8)
 
-| ID | Focus |
-|----|-------|
-| TC-MAN-01 | Register + login + profile |
-| TC-MAN-02 | Invalid login |
-| TC-MAN-03 | Product search |
-| TC-MAN-04 | Cart quantity update |
-| TC-MAN-05 | COD checkout |
-| TC-MAN-06 | Full purchase + invoice |
-| TC-MAN-07 | Invoice details verification |
-| TC-MAN-08 | Duplicate email registration |
+| ID | Type | Focus |
+|----|------|-------|
+| TC-MAN-01 | Functional | Register + login + profile |
+| TC-MAN-02 | Functional (negative) | Invalid login |
+| TC-MAN-03 | **Non-functional (security)** | HTTPS + protected routes require auth |
+| TC-MAN-04 | **Non-functional (performance)** | Catalog page load time |
+| TC-MAN-05 | Functional | COD checkout (double confirm) |
+| TC-MAN-06 | Functional | Full purchase + invoice verification |
+| TC-MAN-07 | Edge | Single Confirm does not generate invoice |
+| TC-MAN-08 | Functional (negative) | Duplicate email registration |
+
+**Coverage mix:** 4 functional, 2 non-functional, 1 edge, 1 negative-focused (TC-MAN-02); 3 `@Smoke`, 5 `@Regression`.
 
 ### UI automation (8) — `PrismStructure/tests/ui/`
 
@@ -192,7 +208,7 @@ Full risk analysis: `prompts/phase-1-prompt-3-risk-analysis.md`
 ### Traceability
 
 - **RTM:** `RequirementTraceabilityMatrix.csv` (82 requirement–test mappings)
-- **Gaps documented:** guest checkout, billing field validation (partial), filter/sort/pagination (manual)
+- **Gaps documented:** guest checkout, billing field validation (partial), filter/sort/pagination (manual), accessibility at scale (future NFR)
 
 ---
 
@@ -240,7 +256,7 @@ Full strategy: `prompts/phase-3-prompt-9-test-data-strategy.md`
 | Phase | Activity | AI contribution | Human validation |
 |-------|----------|-----------------|------------------|
 | **1 — Planning** | Requirements extraction, app analysis, risk analysis | Structured ACs, flow inventory, risk IDs, smoke/regression classification | Reviewed against assessment PDF; resolved ambiguities |
-| **2 — Test design** | Manual CSV, RTM, coverage review | Test case drafts, traceability mapping, gap analysis | Edited CSV for self-containment and traceability IDs |
+| **2 — Test design** | Manual CSV, RTM, coverage review | Test case drafts, traceability mapping, gap analysis; **NFR cases** (security, performance) | Replaced redundant functional manual cases with NFR; kept 8-case cap |
 | **3 — Test data** | Data strategy, Faker factory | Category matrix, factory scaffolding | Validated against OpenAPI password/DOB rules |
 | **4 — Framework** | Prism inspection, Playwright setup | POM structure, fixtures, npm scripts, initial specs | Ran scaffold; verified Prism conventions |
 | **5 — UI automation** | Login, E2E purchase, negative UI | Page objects, `purchaseFlowHelper`, checkout double-confirm | Executed against live SUT; fixed registration form fields |
