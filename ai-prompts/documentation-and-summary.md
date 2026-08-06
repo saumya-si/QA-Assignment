@@ -2,55 +2,107 @@
 
 Prompts used for README, project-info, prompt history, audits, and submission packaging.
 
-**AI tool:** Cursor AI (Agent mode)  
-**Detailed artifacts:** `prompts/phase-8-prompt-*.md`, `phase-9-prompt-*.md`
+**AI tool:** Cursor AI (Agent mode)
 
 ---
 
-## Entry 1 — project-info.md (P21)
+## Entry 1 — project-info.md
 
-- **Prompt:** Create assessment Part A document covering AI workflow, tools, strategy, coverage, maintainability.
-- **AI Response Summary:** Full `project-info.md` with 10 sections aligned to PDF template.
-- **Validation Notes:** Cross-referenced RTM, test counts, responsible AI policy.
-- **Edits made:** Added assessment dates, NFR manual design section, TC-MAN-06/07 clarification.
-- **Reason:** PDF template requires explicit dates and complete manual-design categories.
+**Prompt:**  
+Create `project-info.md` per assessment Part A: project overview, AI tools, requirement analysis, test strategy, manual/automation design, validation approach, test data, debugging, responsible AI, reusability.
 
-## Entry 2 — README (P22)
+**AI Response Summary:**  
+10-section document with objectives, tools, risk summary, test pyramid, coverage tables, test data strategy, AI usage by phase, prompt evolution, maintainability patterns, quick reference.
 
-- **Prompt:** Comprehensive README with setup, commands, test inventory, reports, known issues.
-- **AI Response Summary:** Root `README.md` + aligned `PrismStructure/README.md`.
-- **Validation Notes:** `npm run test:smoke` verified; smoke/regression commands documented.
-- **Edits made:** Linked `execution-evidence/` and `ai-prompts/` folders.
-- **Reason:** Evaluator onboarding and assessment submission structure.
+**Validation Notes:**  
+Cross-referenced test counts, RTM, and execution status. Matches PDF template topics 1–11.
 
-## Entry 3 — AI prompt history (P23)
+**Edits You Made:**  
+Added assessment start/submission dates; NFR manual design section; TC-MAN-06 vs TC-MAN-07 clarification; `ai-prompts/` references.
 
-- **Prompt:** Consolidate full prompt history with validation notes and change log.
-- **AI Response Summary:** `ai-prompt-history.md` master index + per-phase `prompts/` artifacts.
-- **Validation Notes:** 25+ entries across 9 phases; git history cross-checked.
-- **Edits made:** Added P24/P25 audit entries; created `ai-prompts/` PDF-layout folder.
-- **Reason:** Assessment requires transparent AI workflow evidence.
-
-## Entry 4 — Repository audit (P24)
-
-- **Prompt:** 10-area repository audit checklist (Pass/Fail/Needs Evidence).
-- **AI Response Summary:** 7 Pass, 1 Fail (RTM), 2 Needs Evidence before gap resolution.
-- **Validation Notes:** Re-ran suites; grep for secrets; counted tests and tags.
-
-## Entry 5 — Audit gap resolution (P25)
-
-- **Prompt:** Fix RTM, execution evidence, prompt history parity, re-audit.
-- **AI Response Summary:** RTM synced; `execution-summary.md`; 10/10 Pass post-resolution.
-- **Validation Notes:** All 8 API IDs in RTM; no TC-API-03–05 references.
-
-## Entry 6 — Submission packaging (P26)
-
-- **Prompt:** Close execution evidence, `ai-prompts/` layout, and manual CSV Passed status gaps.
-- **AI Response Summary:** `execution-evidence/` logs, manual results, screenshot index; `FunctionalTestCase.csv` Status=Passed; five `ai-prompts/*.md` files.
-- **Validation Notes:** 8/8 manual Passed; 16/16 automation Passed documented; no secrets in committed logs.
-- **Edits made:** Populated ActualResult/Status; created assessment-required folder structure.
-- **Reason:** PDF submission templates for execution reports and prompt history.
+**Reason for Edits:**  
+PDF template requires dates and explicit non-functional manual design coverage.
 
 ---
 
-*Also see: `project-info.md`, `README.md`, `ai-prompt-history.md`*
+## Entry 2 — README and readme.md
+
+**Prompt:**  
+Create comprehensive README: framework, setup, `.env`, npm commands (smoke/regression), test inventory, reports, folder structure, known issues (double confirm). Validate commands work.
+
+**AI Response Summary:**  
+Root `README.md` + `PrismStructure/README.md`. Sections: prerequisites, install, tagged suites, test tables, execution evidence paths, troubleshooting.
+
+**Validation Notes:**  
+`npm run test:smoke` verified (6 passed). All scripts match `package.json`.
+
+**Edits You Made:**  
+Added `readme.md` (assessment-required lowercase filename, identical content). Linked `ai-prompts/`, `execution-evidence/`.
+
+**Reason for Edits:**  
+PDF submission structure specifies `readme.md`; GitHub also renders `README.md`.
+
+---
+
+## Entry 3 — AI prompt history consolidation
+
+**Prompt:**  
+Create master `ai-prompt-history.md` and populate assessment `ai-prompts/` folder with five themed files per PDF layout.
+
+**AI Response Summary:**  
+- `ai-prompt-history.md` — table index across 26 prompts, 9 phases  
+- `ai-prompts/requirements-and-planning.md` through `documentation-and-summary.md` — self-contained entries
+
+**Validation Notes:**  
+Each `ai-prompts/` file uses PDF format (Prompt, AI Response Summary, Validation Notes). No dependency on external `prompts/` folder for evaluator review.
+
+**Edits You Made:**  
+Expanded stub files into full prompt records; removed “see prompts/” deferrals.
+
+**Reason for Edits:**  
+Assessment requires `ai-prompts/` as primary submission artifact, not cross-references.
+
+---
+
+## Entry 4 — Repository audit and gap resolution
+
+**Prompt:**  
+Run 10-area repository audit (structure, counts, tags, RTM, coverage, evidence, README, prompt history, secrets, Git). Close all gaps.
+
+**AI Response Summary:**  
+- P24: 7 Pass, 1 Fail (stale RTM), 2 Needs Evidence  
+- P25: RTM synced to TC-API-07–11; execution summary committed  
+- P26: manual CSV Status=Passed; `execution-evidence/`; `ai-prompts/` populated
+
+**Validation Notes:**  
+Post-resolution audit: 10/10 Pass. 8/8 manual + 16/16 automation documented Passed.
+
+**Edits You Made:**  
+RTM 98 rows; `FunctionalTestCase.csv` ActualResult filled; `.gitignore` scoped so `reports/execution-evidence/` is tracked.
+
+**Reason for Edits:**  
+PDF requires execution reports with all tests Passed and complete prompt history in `ai-prompts/`.
+
+---
+
+## Entry 5 — Cursor project configuration
+
+**Prompt:**  
+Add optional `.cursor/` Rules and Skills per assessment repository structure.
+
+**AI Response Summary:**  
+- `.cursor/rules/qa-assignment-conventions.mdc` — test caps, tags, secrets, double-confirm quirk  
+- `.cursor/skills/toolshop-qa-workflow/SKILL.md` — commands and file map for extending the suite
+
+**Validation Notes:**  
+Optional deliverable per PDF. Rules apply `alwaysApply: true` for consistent AI context in this repo.
+
+**Edits You Made:**  
+Created `.cursor/` tree with rules + project skill.
+
+**Reason for Edits:**  
+Complete assessment folder structure checklist.
+
+---
+
+*Assessment submission file — Documentation and Summary phase (Prompts P21–P26).*

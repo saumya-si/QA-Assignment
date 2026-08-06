@@ -1,0 +1,15 @@
+---
+description: QA Assignment conventions for Toolshop Playwright testing
+alwaysApply: true
+---
+
+# QA Assignment — Project Conventions
+
+- **Stack:** Playwright + Prism POM under `PrismStructure/`
+- **Test caps:** 5–8 tests per tier (manual, UI, API)
+- **Tags:** `@Smoke`, `@Regression`, `@positive`, `@negative`, `@edge`
+- **Secrets:** Use `.env` only — never commit passwords, tokens, or `welcome01`
+- **Test IDs:** Title specs with `TC-UI-##` or `TC-API-##` for traceability
+- **SUT quirk:** COD checkout requires **double Confirm** for invoice generation
+- **Data:** Faker for users; static billing in `test-data/static-test-data.json`
+- **Prompt history:** Record in `ai-prompts/` (assessment layout) when using AI for test work

@@ -28,7 +28,8 @@ This project delivers a complete QA workflow for the Toolshop ecommerce demo app
 | Requirement Traceability Matrix | `RequirementTraceabilityMatrix.csv` |
 | UI + API automation | `PrismStructure/` |
 | Test data (static) | `test-data/static-test-data.json` |
-| Prompt history | `ai-prompts/` (assessment layout) + `prompts/` (detailed) + `ai-prompt-history.md` |
+| Prompt history | `ai-prompts/` (assessment layout, self-contained) + `ai-prompt-history.md` |
+| Cursor config | `.cursor/rules/`, `.cursor/skills/` (optional) |
 | Execution reports | `PrismStructure/reports/execution-summary.md`, `reports/execution-evidence/` |
 
 ### Final execution status

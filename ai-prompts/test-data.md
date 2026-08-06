@@ -2,29 +2,59 @@
 
 Prompts used to design and generate test data for UI + API automation.
 
-**AI tool:** Cursor AI (Agent mode)  
-**Detailed artifacts:** `prompts/phase-3-prompt-9-test-data-strategy.md`
+**AI tool:** Cursor AI (Agent mode)
 
 ---
 
-## Entry 1 — Test data strategy (P9)
+## Entry 1 — Test data strategy
 
-- **Prompt:** Define test data strategy: dynamic vs static, env secrets, API payloads, Faker usage, negative literals.
-- **AI Response Summary:** Six data categories; `testDataFactory.js` design; static billing JSON; OpenAPI-aligned password rules; no secrets in repo.
-- **Validation Notes:** Validated against OpenAPI v5.0.0 password/DOB constraints; `.env.example` has placeholders only.
+**Prompt:**  
+Develop a comprehensive test data strategy: data categories, static vs dynamic, generation methods (Faker, env vars), cleanup/isolation, shared-data risks, and responsible AI usage for test data. Align with OpenAPI password and DOB rules.
 
-## Entry 2 — Factory implementation validation (P11/P16)
+**AI Response Summary:**  
+| Category | Approach |
+|----------|----------|
+| Users | Faker + `testuser_{timestamp}@example.com` |
+| Passwords | `TEST_USER_PASSWORD`, `TEST_CUSTOMER_PASSWORD` in `.env` only |
+| Billing (COD) | Static assessment example in `test-data/static-test-data.json` |
+| Product IDs | Runtime discovery via `GET /products` (in-stock filter) |
+| Search keyword | Static `"hammer"` |
+| Negative literals | `WrongPassword@99`, `weakpass`, invalid ULID |
 
-- **Prompt:** (Implicit during framework setup) Implement Faker users, billing address factory, product discovery from API.
-- **AI Response Summary:** `createUser()`, `createBillingAddress()`, `getInStockProducts()`; email uniqueness suffix for parallel runs.
-- **Validation Notes:** Registration and lifecycle tests pass without hardcoded product IDs or passwords.
+Principles: isolation per run, no secrets in repo, AI suggests patterns but human validates against API contract.
 
-## Entry 3 — Invoice payload alignment (P16)
-
-- **Prompt:** Align API invoice POST body with assessment example (COD billing fields, `cart_id`, `payment_method`).
-- **AI Response Summary:** `createBillingAddress(cartId)` returns assessment-compatible payload from static JSON + dynamic cart ID.
-- **Validation Notes:** TC-API-07 invoice creation returns 201 with valid invoice ID.
+**Validation Notes:**  
+Validated password rules against OpenAPI v5.0.0. `.env.example` has empty placeholders. `testDataFactory.js` implemented in framework phase.
 
 ---
 
-*Static data: `test-data/static-test-data.json` · Factory: `PrismStructure/utils/testDataFactory.js`*
+## Entry 2 — Factory implementation
+
+**Prompt:**  
+Implement `testDataFactory.js` with `createUser()`, `createBillingAddress(cartId)`, `getInStockProducts()`, `getSearchKeyword()`, and env-based customer credentials.
+
+**AI Response Summary:**  
+- `createUser()` — Faker names, unique email suffix, env password, valid DOB range  
+- `createBillingAddress()` — merges static JSON with dynamic `cart_id`  
+- `getInStockProducts()` — filters `in_stock !== false` from API  
+- `redactToken()` in `apiHelper.js` for safe logging
+
+**Validation Notes:**  
+Registration and lifecycle tests pass without hardcoded product IDs. Email collision fixed with alphanumeric suffix (Phase 6).
+
+---
+
+## Entry 3 — Invoice payload alignment
+
+**Prompt:**  
+Ensure API invoice POST body matches assessment example: `billing_street`, `billing_city`, `billing_state`, `billing_country`, `billing_postal_code`, `payment_method: cash-on-delivery`, `cart_id`, `payment_details: {}`.
+
+**AI Response Summary:**  
+`createBillingAddress(cartId)` returns assessment-compatible payload. TC-API-07 uses this for invoice creation after cart setup.
+
+**Validation Notes:**  
+TC-API-07 returns 201 with valid invoice ID. TC-API-11 negative test deletes `billing_city` to trigger validation error.
+
+---
+
+*Assessment submission file — Test Data phase (Prompt P9 + factory implementation).*
