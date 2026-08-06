@@ -1,9 +1,11 @@
 # Project Info — QA AI Capability Exercise
 
 **Repository:** [https://github.com/saumya-si/QA-Assignment](https://github.com/saumya-si/QA-Assignment)  
-**Application Under Test:** [Practice Software Testing — Toolshop v5.0](https://practicesoftwaretesting.com/)  
+**Application Under Test:** Practice Software Testing — Toolshop v5.0 (Checkout & Application Flow)  
 **API:** [https://api.practicesoftwaretesting.com/api/documentation](https://api.practicesoftwaretesting.com/api/documentation)  
-**Primary AI Tool:** Cursor AI (Agent mode)
+**Primary AI Tool:** Cursor AI (Agent mode)  
+**Assessment Start Date:** 2026-08-05  
+**Submission Date:** 2026-08-06
 
 ---
 
@@ -26,7 +28,7 @@ This project delivers a complete QA workflow for the Toolshop ecommerce demo app
 | Requirement Traceability Matrix | `RequirementTraceabilityMatrix.csv` |
 | UI + API automation | `PrismStructure/` |
 | Test data (static) | `test-data/static-test-data.json` |
-| Prompt history | `prompts/` (Phases 1–7) |
+| Prompt history | `prompts/` (Phases 1–9) |
 | Execution reports | `PrismStructure/reports/execution-summary.md` (committed), `reports/html/` (local) |
 
 ### Final execution status
@@ -176,6 +178,8 @@ Product **search** and **multi-item cart quantity** were removed from the manual
 | TC-MAN-06 | Functional | Full purchase + invoice verification |
 | TC-MAN-07 | Edge | Single Confirm does not generate invoice |
 | TC-MAN-08 | Functional (negative) | Duplicate email registration |
+
+> **TC-MAN-06 vs TC-MAN-07:** TC-MAN-06 verifies invoice details after a **successful** double-confirm purchase. TC-MAN-07 is the **edge case** where a single Confirm click must **not** complete checkout or create an invoice (aligned with `FunctionalTestCase.csv` and automated TC-UI-06).
 
 **Coverage mix:** 4 functional, 2 non-functional, 1 edge, 1 negative-focused (TC-MAN-02); 3 `@Smoke`, 5 `@Regression`.
 
@@ -368,4 +372,4 @@ PrismStructure/
 
 ---
 
-*Document created for Phase 8 — Prompt 21. Reflects final project state as of Phase 7 execution (16/16 tests passing).*
+*Last updated: Phase 9 — Prompt 25. Assessment submitted 2026-08-06 (16/16 automated tests passing).*
