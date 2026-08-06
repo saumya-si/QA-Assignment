@@ -8,6 +8,7 @@ auth.json
 test-results/
 playwright-report/
 PrismStructure/reports/html/
+PrismStructure/reports/json/
 PrismStructure/test-results/
 # Local scratch execution evidence (repo root only)
 /execution-evidence/

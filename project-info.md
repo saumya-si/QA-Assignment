@@ -68,6 +68,7 @@ npm run test:regression   # @Regression tagged (13 tests)
 npm run test:ui           # UI only (8 tests)
 npm run test:api          # API only (8 tests)
 npm run report            # Open HTML report
+npm run capture:screenshots  # Regenerate execution-evidence PNGs
 ```
 
 ---
@@ -213,7 +214,7 @@ Product **search** and **multi-item cart quantity** were removed from the manual
 
 ### Traceability
 
-- **RTM:** `RequirementTraceabilityMatrix.csv` (82 requirement–test mappings)
+- **RTM:** `RequirementTraceabilityMatrix.csv` (96 requirement–test mappings)
 - **Gaps documented:** guest checkout, billing field validation (partial), filter/sort/pagination (manual), accessibility at scale (future NFR)
 
 ---
@@ -268,13 +269,15 @@ Full strategy: `prompts/phase-3-prompt-9-test-data-strategy.md`
 | **5 — UI automation** | Login, E2E purchase, negative UI | Page objects, `purchaseFlowHelper`, checkout double-confirm | Executed against live SUT; fixed registration form fields |
 | **6 — API automation** | API analysis, lifecycle, negatives | OpenAPI review, `apiLifecycleHelper`, endpoint fixes | Verified documented paths; fixed 405 on cart add |
 | **7 — Execution** | Smoke run, debug, final validation | Failure RCA, execution reports | Re-ran full suite; confirmed 16/16 pass |
+| **8 — Documentation** | `project-info.md`, README, prompt history | Consolidated deliverables for assessment review | Cross-checked counts, RTM, and execution status |
+| **9 — Audit** | Repository audit, gap resolution, submission packaging | RTM sync, execution evidence, `ai-prompts/` layout, manual Passed status | Re-audit 10/10; committed screenshots and capture script |
 
 ### Responsible AI practices
 
 - **Never shared:** real passwords, bearer tokens, `.env` contents, PATs
 - **Safe to share:** public SUT URLs, OpenAPI schemas, error messages, locator strategies
 - **Validation:** every AI-generated test run against live environment before commit
-- **Prompt history:** captured in `prompts/phase-*-prompt-*.md` (20 prompts, Phases 1–7)
+- **Prompt history:** captured in `prompts/phase-*-prompt-*.md` (26 prompts, Phases 1–9) + `ai-prompt-history.md`
 
 Policy document: `prompts/phase-1-prompt-4-responsible-ai-usage.md`
 
@@ -299,7 +302,7 @@ Policy document: `prompts/phase-1-prompt-4-responsible-ai-usage.md`
 
 ### Prompt discipline
 
-- One focused task per prompt (Phases 1–7, Prompts 1–20)
+- One focused task per prompt (Phases 1–9, Prompts 1–26 including P6b)
 - Each prompt documented with: objective, implementation summary, execution result
 - Git commits after each phase (iterative history, not single commit)
 
@@ -371,7 +374,9 @@ PrismStructure/
 | API contract | OpenAPI at api.practicesoftwaretesting.com |
 | Final execution proof | `prompts/phase-7-prompt-20-final-test-execution.md` |
 | Debug history | `prompts/phase-7-prompt-19-debug-test-failures.md` |
+| Execution screenshots | `PrismStructure/reports/execution-evidence/screenshots/` |
+| Screenshot capture script | `PrismStructure/scripts/capture-execution-screenshots.mjs` |
 
 ---
 
-*Last updated: Phase 9 — Prompt 25. Assessment submitted 2026-08-06 (16/16 automated tests passing).*
+*Last updated: Phase 9 — post-submission polish (2026-08-06). RTM 96 mappings; 26 prompts; 16/16 automation + 8/8 manual passed.*

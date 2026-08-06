@@ -41,7 +41,7 @@
 
 ## Screenshot index
 
-Redacted screenshot descriptions are in `screenshots/README.md`. Full-resolution captures are stored locally only (gitignored `test-results/`) to avoid exposing session data in a public repo.
+Redacted screenshot PNGs are committed in `screenshots/` (see `screenshots/README.md`). Raw Playwright failure artifacts remain in gitignored `test-results/`.
 
 ---
 

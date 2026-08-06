@@ -13,7 +13,8 @@
     "test:ui:regression": "playwright test tests/ui --grep @Regression",
     "test:api:smoke": "playwright test tests/api --grep @Smoke",
     "test:api:regression": "playwright test tests/api --grep @Regression",
-    "report": "playwright show-report reports/html"
+    "report": "playwright show-report reports/html",
+    "capture:screenshots": "node scripts/capture-execution-screenshots.mjs"
   },
   "keywords": ["playwright", "prism", "toolshop", "qa"],
   "license": "MIT",

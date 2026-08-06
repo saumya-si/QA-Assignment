@@ -14,6 +14,7 @@ export default defineConfig({
   workers: 1,
   timeout: 60_000,
   expect: { timeout: 10_000 },
+  preserveOutput: 'always',
 
   reporter: [
     ['list'],
@@ -23,9 +24,10 @@ export default defineConfig({
 
   use: {
     baseURL: env.baseUrl,
-    trace: 'on-first-retry',
+    // Keep videos/traces from failed attempts and retries (e.g. flaky TC-UI-07).
+    trace: 'retain-on-failure-and-retries',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    video: 'retain-on-failure-and-retries',
     actionTimeout: 15_000,
     navigationTimeout: 30_000,
   },

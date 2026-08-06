@@ -33,6 +33,7 @@ npx playwright install chromium
 | `npm run test:ui:regression` | UI regression (7) |
 | `npm run test:api:regression` | API regression (10) |
 | `npm run report` | Open HTML report |
+| `npm run capture:screenshots` | Regenerate execution-evidence PNGs |
 
 ## Reports
 
@@ -40,7 +41,7 @@ npx playwright install chromium
 |--------|------|
 | HTML | `reports/html/index.html` → `npm run report` |
 | JSON | `reports/json/results.json` |
-| Failure artifacts | `test-results/` (screenshots, video) |
+| Failure artifacts | `test-results/` (screenshots, video, trace — retained on failure and retries) |
 
 ## Structure
 

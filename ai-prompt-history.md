@@ -42,7 +42,7 @@ Assessment-required layout: `ai-prompts/` (5 themed files)
 | **P6** | Create 8 manual test cases (CSV) | `FunctionalTestCase.csv` with registration, login, search, cart, COD, invoice, edge case | 8 rows, Smoke/Regression tags, blank ActualResult/Status | TC-MAN-03/04 later replaced with NFR security + performance (P6b) | Manual tier deliverable |
 | **P6b** | Add non-functional manual tests | TC-MAN-03 security (HTTPS + protected routes); TC-MAN-04 performance (catalog load ≤ 5 s) | 8-case cap preserved; search/cart covered by TC-UI-07 | Updated CSV, RTM, `project-info.md` | Close assessment NFR manual-design gap |
 | **P7** | Review manual CSV coverage | 9 issues found; compliant with 5–8 cap and coverage mix | Human review of traceability and step clarity | CSV edits: RequirementID prefixes, TC-MAN-01 address assertion, TC-MAN-06 self-contained, TC-MAN-07 single expected result, TestType→Functional | Improve submission quality and traceability |
-| **P8** | Create Requirement Traceability Matrix | `RequirementTraceabilityMatrix.csv` — 82 mappings, 28 requirements, 22 tests | Cross-walked to P6 CSV and planned automation IDs | RTM updated as API suite grew to 8 tests in Phase 6 | Assessment traceability deliverable |
+| **P8** | Create Requirement Traceability Matrix | `RequirementTraceabilityMatrix.csv` — 82 mappings initially, 28 requirements, 22 tests | Cross-walked to P6 CSV and planned automation IDs | Expanded to **96 mappings** in P25 after API suite consolidation (`TC-API-07`–`11`) | Assessment traceability deliverable |
 
 ---
 
@@ -172,4 +172,4 @@ Assessment-required layout: `ai-prompts/` (5 themed files)
 
 ---
 
-*Last updated: Phase 9 — Prompt 25. Reflects review-ready state (RTM synced, execution summary committed).*
+*Last updated: Phase 9 — post-submission polish. RTM 96 mappings; 26 prompts across Phases 1–9; execution screenshots committed.*
