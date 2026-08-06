@@ -1,0 +1,27 @@
+# Redacted automation console log — Practice Software Testing Toolshop
+# Execution date: 2026-08-06 (UTC+5:30)
+# Command: cd PrismStructure && npm test
+# Note: No passwords, tokens, or .env values appear below.
+
+Running 16 tests using 1 worker
+
+  ok  1 [chromium] › tests/api/auth.api.spec.js › TC-API-01 @Smoke @Regression Register valid user and reject duplicate email
+  ok  2 [chromium] › tests/api/auth.api.spec.js › TC-API-02 @Smoke @positive Valid login returns bearer token
+  ok  3 [chromium] › tests/api/invoice.api.spec.js › TC-API-06 @Regression @negative User can only access own invoices (IDOR)
+  ok  4 [chromium] › tests/api/lifecycle.api.spec.js › TC-API-07 @Smoke @Regression @positive Complete API purchase lifecycle from registration to invoice
+  ok  5 [chromium] › tests/api/negative.api.spec.js › TC-API-08 @Regression @negative Invalid login credentials return error without token
+  ok  6 [chromium] › tests/api/negative.api.spec.js › TC-API-09 @Regression @negative Protected endpoints reject missing authentication token
+  ok  7 [chromium] › tests/api/negative.api.spec.js › TC-API-10 @Regression @negative Invalid resource IDs return not found errors
+  ok  8 [chromium] › tests/api/negative.api.spec.js › TC-API-11 @Regression @negative Invalid request payloads return validation errors
+  ok  9 [chromium] › tests/ui/auth.spec.js › TC-UI-01 @Smoke @positive Register new user with valid data
+  ok 10 [chromium] › tests/ui/auth.spec.js › TC-UI-08 @Regression @negative Register with duplicate email shows error
+  ok 11 [chromium] › tests/ui/cart.spec.js › TC-UI-05 @Regression @negative Empty cart prevents checkout progression
+  ok 12 [chromium] › tests/ui/checkout.spec.js › TC-UI-06 @Regression @negative @edge Single COD confirm does not complete order or create invoice
+  ok 13 [chromium] › tests/ui/checkout.spec.js › TC-UI-07 @Smoke @Regression @positive Complete purchase journey with COD and invoice verification (retry 1)
+  ok 14 [chromium] › tests/ui/login.spec.js › TC-UI-02 @Smoke @positive Valid user login redirects and shows authenticated UI
+  ok 15 [chromium] › tests/ui/login.spec.js › TC-UI-03 @Regression @negative Invalid user login shows error and stays on login page
+  ok 16 [chromium] › tests/ui/product.spec.js › TC-UI-04 @Regression @negative @edge Out-of-stock product cannot be added to cart
+
+  16 passed (2.2m)
+
+Exit code: 0

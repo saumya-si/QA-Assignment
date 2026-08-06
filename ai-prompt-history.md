@@ -18,7 +18,8 @@
 | **Changes Made** | Corrections, refinements, or commits |
 | **Reason** | Why changes were needed |
 
-Detailed per-prompt artifacts: `prompts/phase-*-prompt-*.md`
+Detailed per-prompt artifacts: `prompts/phase-*-prompt-*.md`  
+Assessment-required layout: `ai-prompts/` (5 themed files)
 
 ---
 
@@ -108,6 +109,7 @@ Detailed per-prompt artifacts: `prompts/phase-*-prompt-*.md`
 |-------|--------|---------------------|------------------|--------------|--------|
 | **P24** | Repository audit — 10-area checklist | Audited structure, counts, tags, RTM, coverage, execution evidence, README, prompt history, secrets, git history; 7 Pass, 1 Fail (RTM), 2 Needs Evidence | Re-ran full/smoke/regression suites; grep for secrets; cross-checked RTM vs API specs | Created `prompts/phase-9-prompt-24-repository-audit.md` | Assessment final audit deliverable |
 | **P25** | Final audit gap resolution | Synced RTM to `TC-API-07`–`11`; added redacted `execution-summary.md`; added P21 prompt artifact; updated history and README | Re-audit: 10/10 Pass; RTM python validation — all 8 API IDs present; no `TC-API-03`–`05` | Updated `RequirementTraceabilityMatrix.csv`, `ai-prompt-history.md`, `README.md`, `phase-8-prompt-21-project-info.md`, `phase-9-prompt-25-final-audit-gap-resolution.md` | Close traceability and evidence gaps for review-ready repo |
+| **P26** | Submission packaging — execution evidence + `ai-prompts/` + manual Passed status | `execution-evidence/` logs; five `ai-prompts/*.md` files; `FunctionalTestCase.csv` Status=Passed for all 8 manual tests | 8/8 manual + 16/16 automation documented Passed; no secrets in committed logs | Created `ai-prompts/`, `execution-evidence/`, updated CSV and README | Close PDF submission gaps for execution reports and prompt history layout |
 
 ---
 
@@ -130,9 +132,9 @@ Detailed per-prompt artifacts: `prompts/phase-*-prompt-*.md`
 
 | Metric | Value |
 |--------|-------|
-| Total documented prompts | 25 |
+| Total documented prompts | 26 |
 | Phases | 9 |
-| Prompt artifact files | 25 in `prompts/` + root docs (`project-info.md`, `ai-prompt-history.md`) |
+| Prompt artifact files | 26 in `prompts/` + `ai-prompts/` (5 themed) + root docs |
 | Git commits (iterative) | Multiple per phase — not single commit |
 | Primary AI activities | Requirements, test design, framework, UI/API automation, debugging, documentation |
 
@@ -150,6 +152,8 @@ Detailed per-prompt artifacts: `prompts/phase-*-prompt-*.md`
 - [x] Prompt history captured with validation notes
 - [x] RTM synchronized to final API test suite (P25)
 - [x] Committed redacted execution summary (P25)
+- [x] Manual CSV Status = Passed for all 8 cases (P26)
+- [x] Assessment `ai-prompts/` folder layout (P26)
 
 ---
 
@@ -158,12 +162,13 @@ Detailed per-prompt artifacts: `prompts/phase-*-prompt-*.md`
 | Artifact | Location |
 |----------|----------|
 | Per-prompt detail | `prompts/phase-*-prompt-*.md` |
+| Assessment prompt layout | `ai-prompts/` |
 | Project overview | `project-info.md` |
 | Setup & execution | `README.md` |
 | Manual tests | `FunctionalTestCase.csv` |
 | Traceability | `RequirementTraceabilityMatrix.csv` |
 | Automation | `PrismStructure/` |
-| Execution evidence | `PrismStructure/reports/execution-summary.md` |
+| Execution evidence | `PrismStructure/reports/execution-summary.md`, `reports/execution-evidence/` |
 
 ---
 

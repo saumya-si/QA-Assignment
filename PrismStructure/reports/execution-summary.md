@@ -10,7 +10,19 @@
 
 ---
 
-## Suite Results
+## Manual Test Results (`FunctionalTestCase.csv`)
+
+**Execution date:** 2026-08-06 · **Status: 8/8 Passed**
+
+| Test ID | Result |
+|---------|--------|
+| TC-MAN-01 – TC-MAN-08 | **Passed** |
+
+Detailed results: `execution-evidence/manual-test-execution.md`
+
+---
+
+## Suite Results (Automation)
 
 | Suite | Command | Tests | Passed | Failed | Flaky | Duration | Exit code |
 |-------|---------|-------|--------|--------|-------|----------|-----------|
@@ -69,9 +81,10 @@ All **13** regression-tagged tests passed (8 API + 5 UI dual-tagged + UI-only re
 | Artifact | Committed to repo | Notes |
 |----------|-------------------|-------|
 | This summary | **Yes** | Redacted, review-safe |
+| `execution-evidence/` | **Yes** | Console log, manual results, screenshot index |
 | `reports/html/` | **No** (gitignored) | Regenerate with `npm test` + `npm run report` |
 | `reports/json/results.json` | **No** (local only) | May contain request metadata — not committed |
-| `test-results/` | **No** (gitignored) | Screenshots/videos on failure |
+| `test-results/` | **No** (gitignored) | Raw screenshots/videos/traces |
 | `.env` | **No** (gitignored) | Required for local execution |
 
 ---

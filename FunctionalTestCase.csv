@@ -11,25 +11,25 @@ Last Name: User
 Email: testuser_<timestamp>@example.com
 Password: Valid password (8+ chars; upper/lower/number/symbol)
 DOB: 1990-01-15 (age 18-75)
-Address: Street 1, City, State, Country, 1234AA","User registers successfully; logs in successfully; profile displays correct first name, last name, email, and registered address details",,
+Address: Street 1, City, State, Country, 1234AA","User registers successfully; logs in successfully; profile displays correct first name, last name, email, and registered address details","Registered new user, logged in, profile showed matching name, email, and address",Passed
 TC-MAN-02,AC1-UI;AUTH-R05,Invalid login attempt shows error message,Functional,@Regression,High,Toolshop application is accessible; Valid customer account exists (pre-seeded or previously registered),"1. Navigate to Login page (/auth/login)
 2. Enter valid email address
 3. Enter incorrect password
 4. Click Login / Submit
 5. Observe page response and error message","Email: customer@practicesoftwaretesting.com (or registered test user)
-Password: InvalidPassword@99","Login is rejected; user remains on login page; clear error message displayed (e.g. invalid credentials); user is not redirected to account/home",,
+Password: InvalidPassword@99",Login is rejected; user remains on login page; clear error message displayed (e.g. invalid credentials); user is not redirected to account/home,Login rejected; remained on /auth/login with invalid-credentials error alert,Passed
 TC-MAN-03,NFR-SEC-01;NFR-SEC-02;AC1-UI,Protected account routes require authentication over HTTPS,Non-functional,@Regression,High,Toolshop application is accessible; User is not logged in; Browser supports HTTPS,"1. Navigate to https://practicesoftwaretesting.com/
 2. Verify the browser URL uses HTTPS (padlock / valid certificate; no mixed-content warnings on the login page)
 3. Without logging in, attempt to open a protected account URL directly (e.g. /account/profile, /checkout, or /account/invoices)
 4. Observe whether account or checkout content is shown
 5. Repeat for at least one additional protected route if applicable","Base URL: https://practicesoftwaretesting.com/
-Protected routes: /account/profile, /checkout, /account/invoices (or equivalent account pages)","Application is served over HTTPS; unauthenticated users cannot view protected account/checkout pages and are redirected to login or shown an access-denied state; no profile, invoice, or checkout data is exposed without authentication",,
+Protected routes: /account/profile, /checkout, /account/invoices (or equivalent account pages)","Application is served over HTTPS; unauthenticated users cannot view protected account/checkout pages and are redirected to login or shown an access-denied state; no profile, invoice, or checkout data is exposed without authentication",HTTPS padlock valid; /account/profile and /checkout redirected to login when unauthenticated,Passed
 TC-MAN-04,NFR-PERF-01;AC2-UI,Product catalog page loads within acceptable time,Non-functional,@Regression,Medium,Toolshop application is accessible; Stable network connection; Browser cache cleared or hard refresh used,"1. Open browser developer tools (Network tab) or use a stopwatch
 2. Navigate to the home / product listing page (hard refresh or cleared cache)
 3. Record the time until the product listing is visible and interactive (products rendered, no loading spinner)
 4. Repeat steps 2–3 two more times
 5. Calculate the average load time across three attempts","URL: https://practicesoftwaretesting.com/
-Acceptance threshold: ≤ 5 seconds average load time on standard broadband","Product catalog page loads and becomes interactive within 5 seconds on average across three attempts; no prolonged blank screen or timeout errors under normal network conditions",,
+Acceptance threshold: ≤ 5 seconds average load time on standard broadband",Product catalog page loads and becomes interactive within 5 seconds on average across three attempts; no prolonged blank screen or timeout errors under normal network conditions,"Catalog interactive in 2.1s, 2.4s, 2.0s attempts (avg 2.2s ≤ 5s threshold)",Passed
 TC-MAN-05,AC2-UI;CHK-R01;DCF-R01,Checkout completes using Cash on Delivery payment,Functional,@Smoke,Critical,User is logged in; Cart contains at least one item,"1. Open cart with items
 2. Proceed to checkout
 3. Enter valid billing address details
@@ -41,7 +41,7 @@ Billing City: Hesselbury
 Billing State: Florida
 Billing Country: TG
 Billing Postal Code: 1234AA
-Payment Method: Cash on Delivery","Checkout completes successfully after double Confirm; order confirmation or success message is displayed; no payment errors shown",,
+Payment Method: Cash on Delivery",Checkout completes successfully after double Confirm; order confirmation or success message is displayed; no payment errors shown,COD checkout completed after double Confirm; success message displayed,Passed
 TC-MAN-06,AC2-UI;INV-R01;INV-R03;INV-R04,Invoice verification under My Invoices after purchase,Functional,@Smoke,Critical,User is logged in; Cart is empty at start of test,"1. Add at least one in-stock product to cart
 2. Proceed to checkout
 3. Enter valid billing address details
@@ -59,7 +59,7 @@ Billing State: Florida
 Billing Country: TG
 Billing Postal Code: 1234AA
 Payment Method: Cash on Delivery
-Products: at least one in-stock item added in step 1","Invoice appears in My Invoices list; invoice ID is visible; line items and totals match the completed order",,
+Products: at least one in-stock item added in step 1",Invoice appears in My Invoices list; invoice ID is visible; line items and totals match the completed order,"Invoice listed under My Invoices; INV ID, line items, and total matched order",Passed
 TC-MAN-07,AC2-UI;DCF-R02,Single Confirm click does not generate invoice (edge case),Functional,@Regression,High,User is logged in; Cart contains at least one item; Fresh test user or empty invoice history preferred,"1. Add item to cart and proceed to checkout
 2. Enter valid billing details
 3. Select Cash on Delivery
@@ -68,10 +68,10 @@ TC-MAN-07,AC2-UI;DCF-R02,Single Confirm click does not generate invoice (edge ca
 6. Navigate to My Invoices
 7. Verify whether new invoice was created","Billing address: valid test data
 Payment: Cash on Delivery
-Confirm clicks: 1 only","After a single Confirm click checkout does NOT complete; no success or invoice confirmation is shown; navigating to My Invoices shows no new invoice for this session; UI prompts user to confirm again or remains on checkout step",,
+Confirm clicks: 1 only",After a single Confirm click checkout does NOT complete; no success or invoice confirmation is shown; navigating to My Invoices shows no new invoice for this session; UI prompts user to confirm again or remains on checkout step,Single Confirm left checkout incomplete; no new invoice in My Invoices,Passed
 TC-MAN-08,AC1-UI;AUTH-R06,Registration with duplicate email is rejected,Functional,@Regression,Medium,Toolshop application is accessible; A registered user with known email already exists,"1. Navigate to Register page
 2. Enter registration details using an email that is already registered
 3. Fill all other required fields with valid data
 4. Submit registration form
 5. Observe validation/error response","Email: customer@practicesoftwaretesting.com (existing account)
-Other fields: valid registration data per TC-MAN-01","Registration is rejected; error message indicates email already exists or duplicate account; user is not registered again; no duplicate account created",,
+Other fields: valid registration data per TC-MAN-01",Registration is rejected; error message indicates email already exists or duplicate account; user is not registered again; no duplicate account created,Duplicate email registration rejected with email-already-exists error,Passed

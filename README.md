@@ -212,10 +212,11 @@ Reports are generated automatically after every test run.
 | Format | Path | How to open |
 |--------|------|-------------|
 | **Execution summary** | `PrismStructure/reports/execution-summary.md` | Committed redacted pass/fail evidence (no secrets) |
+| **Execution evidence** | `PrismStructure/reports/execution-evidence/` | Console log, manual results, screenshot index |
 | **HTML** | `PrismStructure/reports/html/index.html` | `npm run report` (from `PrismStructure/`) — gitignored, regenerate locally |
 | **JSON** | `PrismStructure/reports/json/results.json` | Parse for CI integration — not committed |
-| **Screenshots** | `PrismStructure/test-results/` | On failure only — gitignored |
-| **Video** | `PrismStructure/test-results/` | On failure only — gitignored |
+| **Screenshots** | `PrismStructure/test-results/` | On failure — kept for failed attempts and retries (`retain-on-failure-and-retries`) |
+| **Video** | `PrismStructure/test-results/` | On failure/retry — kept for failed attempts and retries (`retain-on-failure-and-retries`) |
 
 HTML report includes per-test status, duration, steps, and failure attachments.
 
@@ -235,8 +236,9 @@ QA-Assignment/
 ├── test-data/
 │   └── static-test-data.json          # Billing, search keywords, DOB rules
 │
-├── ai-prompt-history.md               # Consolidated AI prompt history (23 entries)
-├── prompts/                           # AI prompt history (Phases 1–8)
+├── ai-prompt-history.md               # Consolidated AI prompt history (master index)
+├── ai-prompts/                        # Assessment-required prompt history (5 files)
+├── prompts/                           # Detailed per-prompt artifacts (Phases 1–9)
 │
 └── PrismStructure/                    # Playwright automation framework
     ├── package.json                   # npm scripts and dependencies
@@ -312,7 +314,7 @@ Assessment limits each automation tier to **5–8 tests**. Current counts: **8 U
 | `Missing required environment variable: TEST_USER_PASSWORD` | Create `.env` from `.env.example` and set passwords |
 | `405` on cart add (API) | Ensure `CartApiPage.addProduct` uses `POST /carts/{id}` with `{ product_id, quantity }` |
 | Registration stays on `/auth/register` | Verify address, country, and numeric phone are filled |
-| TC-UI-07 flaky on first run | Normal — retries once; check `test-results/` screenshot if persistent |
+| TC-UI-07 flaky on first run | Normal — retries once; failure + retry artifacts kept under `test-results/` (`retain-on-failure-and-retries`) |
 | `npx playwright: command not found` | Run `npm install` inside `PrismStructure/` |
 
 ---
@@ -323,8 +325,9 @@ Assessment limits each automation tier to **5–8 tests**. Current counts: **8 U
 |----------|-------------|
 | [project-info.md](project-info.md) | Strategy, risks, AI usage, maintainability |
 | [PrismStructure/README.md](PrismStructure/README.md) | Framework quick reference |
-| [ai-prompt-history.md](ai-prompt-history.md) | Consolidated AI prompt history (23 entries) |
-| [prompts/](prompts/) | Full AI prompt history by phase |
+| [ai-prompt-history.md](ai-prompt-history.md) | Consolidated AI prompt history (master index) |
+| [ai-prompts/](ai-prompts/) | Assessment-required prompt history (5 themed files) |
+| [prompts/](prompts/) | Detailed per-prompt artifacts by phase |
 | [RequirementTraceabilityMatrix.csv](RequirementTraceabilityMatrix.csv) | Requirement traceability |
 
 ---
