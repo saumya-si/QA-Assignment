@@ -54,8 +54,25 @@ export class AuthPage extends BasePage {
   }
 
   async gotoProfile() {
-    await this.page.getByRole('link', { name: /profile|account|my account/i }).click();
+    await this.navigate('/account/profile');
     await this.waitForAngularLoad();
+  }
+
+  async expectProfileDetails(user) {
+    await this.gotoProfile();
+
+    await expect(this.page.getByRole('heading', { name: /^profile$/i })).toBeVisible();
+    await expect(this.page.getByRole('textbox', { name: /first name/i })).toHaveValue(user.first_name);
+    await expect(this.page.getByRole('textbox', { name: /last name/i })).toHaveValue(user.last_name);
+    await expect(this.page.getByRole('textbox', { name: /email address/i })).toHaveValue(user.email);
+
+    if (user.address) {
+      await expect(this.page.getByRole('textbox', { name: /^street$/i })).toHaveValue(user.address.street);
+      await expect(this.page.getByRole('textbox', { name: /^city$/i })).toHaveValue(user.address.city);
+      await expect(this.page.getByRole('textbox', { name: /^state$/i })).toHaveValue(user.address.state);
+      await expect(this.page.getByRole('textbox', { name: /postal code/i })).toHaveValue(user.address.postal_code);
+      await expect(this.page.getByRole('textbox', { name: /^country$/i })).toHaveValue(user.address.country);
+    }
   }
 
   async getProfileText() {

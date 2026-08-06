@@ -136,7 +136,7 @@ npm run report
 | ID | Scenario | Tags |
 |----|----------|------|
 | TC-UI-01 | Register valid user | `@Smoke @positive` |
-| TC-UI-02 | Valid login | `@Smoke @positive` |
+| TC-UI-02 | Valid login + profile verification | `@Smoke @positive` |
 | TC-UI-03 | Invalid login | `@Regression @negative` |
 | TC-UI-04 | Out-of-stock product | `@Regression @negative @edge` |
 | TC-UI-05 | Empty cart blocks checkout | `@Regression @negative` |

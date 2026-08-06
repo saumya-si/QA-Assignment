@@ -190,7 +190,7 @@ Product **search** and **multi-item cart quantity** were removed from the manual
 | ID | Scenario | Tags |
 |----|----------|------|
 | TC-UI-01 | Register valid user | `@Smoke @positive` |
-| TC-UI-02 | Valid login + authenticated UI | `@Smoke @positive` |
+| TC-UI-02 | Valid login + profile verification | `@Smoke @positive` |
 | TC-UI-03 | Invalid login error | `@Regression @negative` |
 | TC-UI-04 | Out-of-stock cannot add to cart | `@Regression @negative @edge` |
 | TC-UI-05 | Empty cart blocks checkout | `@Regression @negative` |

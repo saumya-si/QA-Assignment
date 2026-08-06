@@ -29,10 +29,10 @@ Inspect Prism framework architecture (POM, fixtures, tagging, reporting). Scaffo
 Automate valid login (TC-UI-02, `@Smoke`) and invalid login (TC-UI-03, `@Regression`). Create dedicated `loginPage.js`.
 
 **AI Response Summary:**  
-`login.spec.js` with API pre-register for valid case; invalid case uses pre-seeded customer email + wrong password. Assertions: redirect away from `/auth/login`, authenticated nav visible, error alert on failure.
+`login.spec.js` with API pre-register + UI login. `AuthPage.expectProfileDetails()` navigates to `/account/profile` and asserts first name, last name, email, and address fields via form values.
 
 **Validation Notes:**  
-Both tests passed against live SUT on first run after implementation.
+TC-UI-02 and TC-UI-03 passed against live SUT. Profile fields verified on `/account/profile` (not nav-only).
 
 **Debugging Outcome:** Login extracted from `auth.spec.js` for isolation — no failures.
 

@@ -2,8 +2,9 @@ import { test, expect } from '../../fixtures/testFixtures.js';
 import { getCustomerEmail, generateInvalidPassword } from '../../utils/testDataFactory.js';
 
 test.describe('Login UI', () => {
-  test('TC-UI-02 @Smoke @positive Valid user login redirects and shows authenticated UI', async ({
+  test('TC-UI-02 @Smoke @positive Valid user login and profile verification', async ({
     loginPage,
+    authPage,
     authApi,
     testUser,
   }) => {
@@ -15,6 +16,7 @@ test.describe('Login UI', () => {
     await loginPage.waitForLoginSuccess();
     await expect(loginPage.page).not.toHaveURL(/\/auth\/login/);
     await loginPage.expectAuthenticatedNav();
+    await authPage.expectProfileDetails(testUser);
   });
 
   test('TC-UI-03 @Regression @negative Invalid user login shows error and stays on login page', async ({
